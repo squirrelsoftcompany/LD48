@@ -28,7 +28,7 @@ public class SettingsGenerator :
     /***************************************************/
 
     [MenuItem("Assets/Generate\\Update settings file")]
-    private static void generateSettingsFiles()
+    private static void GenerateSettingsFile()
     {
         if (File.Exists(PATH + FILE_NAME) && ! EditorUtility.DisplayDialog("Are you sure ?", "This action will overwrite the actual settings saved.\n Do you still want to do it ?", "Yes", "Oh God ! No !!"))
             return;
