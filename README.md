@@ -10,3 +10,7 @@ Version of Unity3D's used : 2019.1.0f2
 
 This template integrate some free plugins :
  - No plugins at this time
+
+# Warnings
+
+:warning: This project is using git-lfs. You must have git-lfs on your computer. Go [here](https://help.github.com/en/articles/installing-git-large-file-storage) to know what to do.
