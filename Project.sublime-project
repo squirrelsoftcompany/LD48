@@ -2,6 +2,8 @@
 	"folders":
 	[
 		{
+			"folder_exclude_patterns":[".vs", "Packages", "obj", "Library", "Temp"],
+			"file_exclude_patterns":["*.csproj", "*.meta", ".nomedi"],
 			"follow_symlinks": true,
 			"path": "."
 		}
