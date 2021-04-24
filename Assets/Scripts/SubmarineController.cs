@@ -1,4 +1,6 @@
+using InputSystem;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 [ExecuteInEditMode]
@@ -8,8 +10,32 @@ public class SubmarineController : MonoBehaviour {
     [SerializeField] private float velocity;
     [SerializeField] private float maxVelocity;
     [SerializeField] private GameEvent bubbleEvent;
+    [SerializeField] private GameEvent echolocationEvent;
     private bool _isGoingDown;
     private float _sqrMaxVelocity;
+    private SubmarineInput controls;
+    private Vector3 _currentMove;
+
+    private void Awake() {
+        controls = new SubmarineInput();
+        controls.Player.Echolocation.started += context => echolocation();
+        // controls.Player.Echolocation.performed += context => echolocation();
+    }
+
+    private void echolocation() {
+        print("echolocation");
+        echolocationEvent.Raise();
+        // todo ask for location of target
+        // todo for enemies: listen to echolocation event, and find my position/direction
+    }
+
+    private void OnEnable() {
+        controls?.Enable();
+    }
+
+    private void OnDisable() {
+        controls?.Disable();
+    }
 
     private void OnValidate() {
         setMaxVelocity(maxVelocity);
@@ -28,11 +54,18 @@ public class SubmarineController : MonoBehaviour {
         _sqrMaxVelocity = maxVelocity * maxVelocity;
     }
 
+    public void Move(InputAction.CallbackContext context) {
+        // This returns Vector2.zero when context.canceled
+        // is true, so no need to handle these separately.
+        _currentMove = context.ReadValue<Vector2>();
+    }
+
     private void FixedUpdate() {
         if (_rigidbody.velocity.sqrMagnitude > _sqrMaxVelocity) {
             // clamp velocity
             _rigidbody.velocity = _rigidbody.velocity.normalized * maxVelocity;
         }
+
         // Is the submarine going down? 
         var velocityY = Vector3.Project(_rigidbody.velocity, Vector3.up).y;
 
@@ -50,26 +83,21 @@ public class SubmarineController : MonoBehaviour {
             }
         }
 
-        Vector3? wantedDirection = null;
-        if (Input.GetKey("up")) {
-            // We want to go upward
-            wantedDirection = Vector3.left;
-        } else if (Input.GetKey("down")) {
-            // We want to go upward
-            wantedDirection = Vector3.right;
-        } else if (Input.GetKey("left")) {
-            // We want to go left
-            wantedDirection = Vector3.down;
-        } else if (Input.GetKey("right")) {
-            wantedDirection = Vector3.up;
+        // Add a rotational force
+        if (_currentMove.y != 0) {
+            // up direction
+            _rigidbody.AddTorque(Vector3.left * _currentMove.y);
+            print("upDir: " + _currentMove.y);
         }
 
-        print("wanted Dir" + wantedDirection);
-        if (wantedDirection != null) {
-            _rigidbody.AddTorque((Vector3) wantedDirection);
+        if (_currentMove.x != 0) {
+            // left dir
+            _rigidbody.AddTorque(Vector3.up * _currentMove.x);
+            print("leftDir: " + _currentMove.x);
         }
 
-        if (Input.GetKey("space")) {
+        // Accelerate
+        if (Keyboard.current.spaceKey.isPressed) {
             // Acceleration
             _rigidbody.AddForce(transform.forward * velocity, ForceMode.Impulse);
         }

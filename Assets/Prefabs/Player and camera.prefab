@@ -154,8 +154,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4010951996918530793}
-  m_LocalRotation: {x: 0.112178676, y: -1e-45, z: -0, w: 0.9936881}
-  m_LocalPosition: {x: 1.2519603, y: 1.3429788, z: -3.0244732}
+  m_LocalRotation: {x: 0.112178445, y: 1e-45, z: -0, w: 0.9936881}
+  m_LocalPosition: {x: 1.2519531, y: 1.3429794, z: -3.024475}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4010951998135452703}
@@ -258,17 +258,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TrackedObjectOffset: {x: 0, y: 1.39, z: -0.59}
-  m_LookaheadTime: 0.534
-  m_LookaheadSmoothing: 6.4
-  m_LookaheadIgnoreY: 1
+  m_LookaheadTime: 0.47
+  m_LookaheadSmoothing: 1.3
+  m_LookaheadIgnoreY: 0
   m_HorizontalDamping: 6.57
   m_VerticalDamping: 7.86
   m_ScreenX: 0.5
   m_ScreenY: 0.543
   m_DeadZoneWidth: 0.179
   m_DeadZoneHeight: 0.248
-  m_SoftZoneWidth: 0.76093733
-  m_SoftZoneHeight: 0.77685195
+  m_SoftZoneWidth: 0.453
+  m_SoftZoneHeight: 0.496
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
@@ -284,11 +284,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 4
+  m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 3.25, z: -7.7}
   m_XDamping: 0.91
-  m_YDamping: 0.83
-  m_ZDamping: 1.77
+  m_YDamping: 0.32
+  m_ZDamping: 0.32
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 4010951998426490700}
   - component: {fileID: 4010951998426490703}
   - component: {fileID: 4010951998426490701}
+  - component: {fileID: 5618263755243142556}
   m_Layer: 0
   m_Name: Submarine Player
   m_TagString: Untagged
@@ -440,6 +441,7 @@ MonoBehaviour:
   velocity: 2
   maxVelocity: 10
   bubbleEvent: {fileID: 11400000, guid: 588fdca3053bebd4fb581239caa6b0b5, type: 2}
+  echolocationEvent: {fileID: 11400000, guid: 1a4baf229e11acb48ab3e222d81bf367, type: 2}
 --- !u!54 &4010951998426490701
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -456,6 +458,101 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 64
   m_CollisionDetection: 0
+--- !u!114 &5618263755243142556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4010951998426490702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: f1ca92bd1dc8c2c4a8bf60a63b76c959,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4010951998426490703}
+        m_TargetAssemblyTypeName: SubmarineController, Assembly-CSharp
+        m_MethodName: Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c0401f95-eff4-40f0-b705-f2b1937daf30
+    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f366acfe-fe85-447c-86b9-0bc2c96655fa
+    m_ActionName: Player/Look[/Mouse/delta,/Pen/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 728736b4-09c9-4a84-aa84-5972890a7d00
+    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 04d0ff6f-fed0-4287-a5b8-f818f5c7f6e7
+    m_ActionName: UI/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a6425bf0-7318-4ec7-ade5-5b685a6135a5
+    m_ActionName: UI/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 41e23051-e617-4a0a-a238-ec97ebc4e8e4
+    m_ActionName: UI/Point[/Mouse/position,/Pen/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d82d2af3-8c89-4b68-bd31-38e6f87a9aad
+    m_ActionName: UI/Click[/Mouse/leftButton,/Pen/tip]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a9e18eba-a7a7-42af-9059-b08a6de7b448
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6181d27f-0f8d-41a1-89fa-8d22ba12b81c
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cb22d48a-4b82-4775-b0df-672f1b3987cd
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cf4f8b4a-256f-4232-82c4-0d89570874f1
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3ec7178c-0f60-4509-91b7-07531da2ce3d
+    m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6fa7184b-efc7-4c76-bae9-14a36c88af13
+    m_ActionName: Player/Echolocation[/Keyboard/e]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &6927592228089273906
 GameObject:
   m_ObjectHideFlags: 0
