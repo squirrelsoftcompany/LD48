@@ -499,6 +499,7 @@ GameObject:
   - component: {fileID: 4010951998426490703}
   - component: {fileID: 4010951998426490701}
   - component: {fileID: 5618263755243142556}
+  - component: {fileID: 2478747234006660289}
   m_Layer: 0
   m_Name: Submarine Player
   m_TagString: Untagged
@@ -650,6 +651,22 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2478747234006660289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4010951998426490702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40d154fcc5682c9468270b3b26ffeb5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tickInterval: 1
+  loseHealth: 0.5
+  maxHealth: 200
+  mentalHealthEvent: {fileID: 11400000, guid: 8b9b35a685c333b4783a682cc539c0af, type: 2}
 --- !u!1 &6927592228089273906
 GameObject:
   m_ObjectHideFlags: 0
