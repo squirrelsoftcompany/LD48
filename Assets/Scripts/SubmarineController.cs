@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -8,6 +7,8 @@ public class SubmarineController : MonoBehaviour {
     [SerializeField] private float angularVelocity;
     [SerializeField] private float velocity;
     [SerializeField] private float maxVelocity;
+    [SerializeField] private GameEvent bubbleEvent;
+    private bool _isGoingDown;
     private float _sqrMaxVelocity;
 
     private void OnValidate() {
@@ -21,6 +22,7 @@ public class SubmarineController : MonoBehaviour {
 
     // Start is called before the first frame update
     private void Start() {
+        _isGoingDown = false;
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.maxAngularVelocity = Mathf.Deg2Rad * angularVelocity;
         _sqrMaxVelocity = maxVelocity * maxVelocity;
@@ -30,6 +32,22 @@ public class SubmarineController : MonoBehaviour {
         if (_rigidbody.velocity.sqrMagnitude > _sqrMaxVelocity) {
             // clamp velocity
             _rigidbody.velocity = _rigidbody.velocity.normalized * maxVelocity;
+        }
+        // Is the submarine going down? 
+        var velocityY = Vector3.Project(_rigidbody.velocity, Vector3.up).y;
+
+        if (velocityY < -float.Epsilon) {
+            if (!_isGoingDown) {
+                bubbleEvent.sentBool = true;
+                bubbleEvent.Raise();
+                _isGoingDown = true;
+            }
+        } else {
+            if (_isGoingDown) {
+                bubbleEvent.sentBool = false;
+                bubbleEvent.Raise();
+                _isGoingDown = false;
+            }
         }
 
         Vector3? wantedDirection = null;

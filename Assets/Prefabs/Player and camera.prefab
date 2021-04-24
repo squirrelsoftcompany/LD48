@@ -420,6 +420,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4010951996486867220}
+  - {fileID: 5553268293388695103}
   m_Father: {fileID: 2788825043698012337}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -438,6 +439,7 @@ MonoBehaviour:
   angularVelocity: 90
   velocity: 2
   maxVelocity: 10
+  bubbleEvent: {fileID: 11400000, guid: 588fdca3053bebd4fb581239caa6b0b5, type: 2}
 --- !u!54 &4010951998426490701
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -454,3 +456,161 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 64
   m_CollisionDetection: 0
+--- !u!1 &6927592228089273906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5553268293388695103}
+  - component: {fileID: 6882057412621109773}
+  m_Layer: 0
+  m_Name: Particles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5553268293388695103
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927592228089273906}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4898363815011331238}
+  m_Father: {fileID: 4010951998426490700}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6882057412621109773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927592228089273906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa39e69ee488484439cd909f5f2a3254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 588fdca3053bebd4fb581239caa6b0b5, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentString:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentInt:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentFloat:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentBool:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4898363815011331237}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1001 &8163227536099981803
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5553268293388695103}
+    m_Modifications:
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583374, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_Name
+      value: BubblesParticles
+      objectReference: {fileID: 0}
+    - target: {fileID: 3653518665066583374, guid: a6f876052ecb7b04ca50b10674df56b7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a6f876052ecb7b04ca50b10674df56b7, type: 3}
+--- !u!1 &4898363815011331237 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3653518665066583374, guid: a6f876052ecb7b04ca50b10674df56b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 8163227536099981803}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4898363815011331238 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 8163227536099981803}
+  m_PrefabAsset: {fileID: 0}
