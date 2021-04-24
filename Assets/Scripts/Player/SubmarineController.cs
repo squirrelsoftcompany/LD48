@@ -1,5 +1,6 @@
 using System;
 using InputSystem;
+using Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,14 +9,16 @@ namespace Player {
     [ExecuteInEditMode]
     public class SubmarineController : MonoBehaviour {
         private Rigidbody _rigidbody;
-        [SerializeField] private float angularVelocity;
-        [SerializeField] private float velocity;
-        [SerializeField] private float maxVelocity;
+        private float angularVelocity;
+        private float velocity;
+        private float maxVelocity;
         [SerializeField] private GameEvent bubbleEvent;
         [SerializeField] private GameEvent echolocationEvent;
         [SerializeField] private GameEvent depthEvent;
-        [SerializeField] private float minChangeDepth = 0.5f;
+        private float minChangeDepth = 0.5f;
         [SerializeField] private Transform referenceZeroDepth;
+        [SerializeField] private Transform referenceMaxDepth;
+        [SerializeField] private PlayerData playerData;
 
         private bool _isGoingDown;
 
@@ -28,6 +31,11 @@ namespace Player {
         private void Awake() {
             controls = new SubmarineInput();
             controls.Player.Echolocation.started += context => echolocation();
+            velocity = playerData.velocity;
+            angularVelocity = playerData.angularVelocity;
+            maxVelocity = playerData.maxVelocity;
+            minChangeDepth = playerData.minChangeDepth;
+            playerData.maxDepth = referenceMaxDepth.position.y - referenceZeroDepth.position.y;
         }
 
         private void echolocation() {
@@ -68,6 +76,7 @@ namespace Player {
             // is true, so no need to handle these separately.
             _currentMove = context.ReadValue<Vector2>();
         }
+
         private void FixedUpdate() {
             if (_rigidbody.velocity.sqrMagnitude > _sqrMaxVelocity) {
                 // clamp velocity

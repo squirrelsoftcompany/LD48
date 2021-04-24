@@ -535,14 +535,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef6f8d1e6942d5429219f58da95e59d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angularVelocity: 90
-  velocity: 2
-  maxVelocity: 10
   bubbleEvent: {fileID: 11400000, guid: 588fdca3053bebd4fb581239caa6b0b5, type: 2}
   echolocationEvent: {fileID: 11400000, guid: 1a4baf229e11acb48ab3e222d81bf367, type: 2}
   depthEvent: {fileID: 11400000, guid: 75a7442fdf897fd44acd8c47fe2ef5fa, type: 2}
-  minChangeDepth: 0.5
   referenceZeroDepth: {fileID: 0}
+  playerData: {fileID: 11400000, guid: ae01a080153326147b393a4e4574d85e, type: 2}
 --- !u!54 &4010951998426490701
 Rigidbody:
   m_ObjectHideFlags: 0
