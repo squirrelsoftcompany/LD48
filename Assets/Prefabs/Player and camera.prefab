@@ -120,7 +120,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2646451812670008651}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2519603, y: 1.9070212, z: -4.6755266}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4010951998426490700}
@@ -251,8 +251,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4010951996918530793}
-  m_LocalRotation: {x: 0.15150373, y: -0, z: -0, w: 0.9884567}
-  m_LocalPosition: {x: -138.39923, y: -106.73, z: 317.19653}
+  m_LocalRotation: {x: 0.15150371, y: -1e-45, z: -0, w: 0.9884567}
+  m_LocalPosition: {x: 881.2, y: 12.07, z: 423.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4010951998135452703}
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 2478747234006660289}
   m_Layer: 0
   m_Name: Submarine Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -515,7 +515,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4010951998426490702}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -138.39923, y: -112.5, z: 325.30652}
+  m_LocalPosition: {x: 881.2, y: 6.3, z: 431.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4010951996486867220}
@@ -664,7 +664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tickInterval: 1
-  loseHealth: 0.5
+  loseHealth: 2
   maxHealth: 200
   mentalHealthEvent: {fileID: 11400000, guid: 8b9b35a685c333b4783a682cc539c0af, type: 2}
 --- !u!1 &6927592228089273906
