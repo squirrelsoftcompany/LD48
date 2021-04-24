@@ -22,8 +22,7 @@ namespace Behaviour
             _rigidbody = GetComponent<Rigidbody>();
 
             // GIZMOS
-            _actuallyApproching = new List<KeyValuePair<GameObject, float>>();
-            _actuallyAvoiding = new List<KeyValuePair<GameObject, float>>();
+            _gizmoDatum = new List<GizmoData>();
         }
 
         // Update is called once per frame
@@ -37,8 +36,6 @@ namespace Behaviour
             {
                 Quaternion.FromToRotation(currentDirection, _wantedDirection).ToAngleAxis(out float lAngle, out Vector3 lAxis);
                 _rigidbody.angularVelocity = lAxis * Mathf.Min(lAngle, lRadAngularVelocity);
-                if (UnityEditor.Selection.activeGameObject == gameObject)
-                    Debug.Log(lAxis);
             }
             else
             {
@@ -51,8 +48,7 @@ namespace Behaviour
         private void FixedUpdate()
         {
             // GIZMOS
-            _actuallyApproching.Clear();
-            _actuallyAvoiding.Clear();
+            _gizmoDatum.Clear();
 
             Vector3 directionSum = transform.forward; // self weight = 1
             
@@ -72,24 +68,29 @@ namespace Behaviour
                 if (distance < data.m_relevantRadius) // inside range
                 {
                     float w = data.GetWeight(distance);
+                    Vector3 finalDirection = direction;
                     if (data.m_avoid) // avoid
                     {
-                        directionSum -= direction * w;
-                        _actuallyAvoiding.Add(new KeyValuePair<GameObject, float>(relevant,w));
+                        finalDirection = -direction;
                     }
-                    else // approach
-                    {
-                        directionSum += direction * w;
-                        _actuallyApproching.Add(new KeyValuePair<GameObject, float>(relevant, w));
-                    }
+
+                    directionSum += finalDirection * w;
+
+                    // GIZMOS
+                    var gizmoData = new GizmoData();
+                    gizmoData.m_position = relevant.transform.position;
+                    gizmoData.m_direction = finalDirection;
+                    gizmoData.m_weight = w;
+                    _gizmoDatum.Add(gizmoData);
                 }
             }
             _wantedDirection = directionSum.normalized;
         }
 
+
         // GIZMOS
-        private List<KeyValuePair<GameObject,float>> _actuallyApproching;
-        private List<KeyValuePair<GameObject,float>> _actuallyAvoiding;
+        private struct GizmoData { public Vector3 m_position; public Vector3 m_direction; public float m_weight; }
+        private List<GizmoData> _gizmoDatum;
 
         private void OnDrawGizmos()
         {
@@ -107,15 +108,9 @@ namespace Behaviour
                 return;
 
             Gizmos.color = Color.green;
-            foreach (var approching in _actuallyApproching)
+            foreach (var data in _gizmoDatum)
             {
-                Gizmos.DrawSphere(approching.Key.transform.position, 5 * approching.Value);
-            }
-
-            Gizmos.color = Color.red;
-            foreach (var avoiding in _actuallyAvoiding)
-            {
-                Gizmos.DrawSphere(avoiding.Key.transform.position, 5 * avoiding.Value);
+                Gizmos.DrawLine(data.m_position, data.m_position + data.m_direction * 10 * data.m_weight);
             }
         }
     }
