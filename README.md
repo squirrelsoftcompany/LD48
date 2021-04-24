@@ -1,11 +1,11 @@
-# Template
+# LD48
 
-Here's a very short template of Unity3D's project.
+Source code of SquirrelSoft company's LD48 entry.
 
-# Version of Unity3D
+## Version of Unity3D
 
-Version of Unity3D's used : 2019.1.0f2
+Version of Unity3D's used : 2021.1.3f1
 
-# Warnings
+## Warnings
 
 :warning: This project is using git-lfs. You must have git-lfs on your computer. Go [here](https://help.github.com/en/articles/installing-git-large-file-storage) to know what to do.
