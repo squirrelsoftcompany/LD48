@@ -86,13 +86,13 @@ public class SubmarineController : MonoBehaviour {
         // Add a rotational force
         if (_currentMove.y != 0) {
             // up direction
-            _rigidbody.AddTorque(Vector3.left * _currentMove.y);
+            _rigidbody.AddRelativeTorque(Vector3.left * (_currentMove.y * angularVelocity * Time.deltaTime));
             print("upDir: " + _currentMove.y);
         }
 
         if (_currentMove.x != 0) {
             // left dir
-            _rigidbody.AddTorque(Vector3.up * _currentMove.x);
+            _rigidbody.AddRelativeTorque(Vector3.up * (_currentMove.x * angularVelocity * Time.deltaTime));
             print("leftDir: " + _currentMove.x);
         }
 
