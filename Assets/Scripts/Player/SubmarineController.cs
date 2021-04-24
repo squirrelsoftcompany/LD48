@@ -1,3 +1,4 @@
+using System;
 using InputSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +13,14 @@ namespace Player {
         [SerializeField] private float maxVelocity;
         [SerializeField] private GameEvent bubbleEvent;
         [SerializeField] private GameEvent echolocationEvent;
+        [SerializeField] private GameEvent depthEvent;
+        [SerializeField] private float minChangeDepth = 0.5f;
+        [SerializeField] private Transform referenceZeroDepth;
+
         private bool _isGoingDown;
+
+        // private float _depth;
+        private float _lastSentDepth;
         private float _sqrMaxVelocity;
         private SubmarineInput controls;
         private Vector3 _currentMove;
@@ -20,7 +28,6 @@ namespace Player {
         private void Awake() {
             controls = new SubmarineInput();
             controls.Player.Echolocation.started += context => echolocation();
-            // controls.Player.Echolocation.performed += context => echolocation();
         }
 
         private void echolocation() {
@@ -53,6 +60,7 @@ namespace Player {
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.maxAngularVelocity = Mathf.Deg2Rad * angularVelocity;
             _sqrMaxVelocity = maxVelocity * maxVelocity;
+            _lastSentDepth = referenceZeroDepth.position.y;
         }
 
         public void Move(InputAction.CallbackContext context) {
@@ -60,7 +68,6 @@ namespace Player {
             // is true, so no need to handle these separately.
             _currentMove = context.ReadValue<Vector2>();
         }
-
         private void FixedUpdate() {
             if (_rigidbody.velocity.sqrMagnitude > _sqrMaxVelocity) {
                 // clamp velocity
@@ -82,6 +89,14 @@ namespace Player {
                     bubbleEvent.Raise();
                     _isGoingDown = false;
                 }
+            }
+
+            // depth of submarine?
+            var newDepth = referenceZeroDepth.position.y - transform.position.y;
+            if (Math.Abs(newDepth - _lastSentDepth) > minChangeDepth) {
+                _lastSentDepth = newDepth;
+                depthEvent.sentFloat = newDepth;
+                depthEvent.Raise();
             }
 
             // Add a rotational force
