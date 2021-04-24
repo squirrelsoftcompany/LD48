@@ -101,5 +101,11 @@ public class SubmarineController : MonoBehaviour {
             // Acceleration
             _rigidbody.AddForce(transform.forward * velocity, ForceMode.Impulse);
         }
+
+        // do not allow z rotations!
+        var transform1 = transform;
+        var localEulerAngles = transform1.localEulerAngles;
+        localEulerAngles = new Vector3(localEulerAngles.x, localEulerAngles.y, 0);
+        transform1.localEulerAngles = localEulerAngles;
     }
 }
