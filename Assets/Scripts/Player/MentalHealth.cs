@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 namespace Player {
     public class MentalHealth : MonoBehaviour {
         private float health;
-        [SerializeField] private float tickInterval = 1;
+        [SerializeField] private float tickLoseInterval = 1;
 
         // loseHealth = ax + b, with x corresponding to depth
         [SerializeField] private float loseCoefficientA;
@@ -42,7 +42,7 @@ namespace Player {
 
         private IEnumerator CountDown() {
             while (Health > 0) {
-                yield return new WaitForSeconds(tickInterval);
+                yield return new WaitForSeconds(tickLoseInterval);
                 var depthPercent = depthEvent.sentFloat / playerData.maxDepth;
                 Health -= loseCoefficientA * depthPercent + loseCoefficientB;
             }

@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d154fcc5682c9468270b3b26ffeb5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickInterval: 1
+  tickLoseInterval: 1
   loseCoefficientA: 4.5
   loseCoefficientB: 0.5
   maxHealth: 200
