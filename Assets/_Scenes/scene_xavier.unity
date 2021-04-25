@@ -374,12 +374,12 @@ PrefabInstance:
     - target: {fileID: 4010951996918530791, guid: dc0daed33e2ebfc4fac7d86f15e26253,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000018606963
+      value: 0.000000018606963
       objectReference: {fileID: 0}
     - target: {fileID: 4010951996918530791, guid: dc0daed33e2ebfc4fac7d86f15e26253,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000048841855
+      value: -0.0000000048841855
       objectReference: {fileID: 0}
     - target: {fileID: 4010951998426490703, guid: dc0daed33e2ebfc4fac7d86f15e26253,
         type: 3}
@@ -1010,12 +1010,12 @@ PrefabInstance:
     - target: {fileID: 5668585967678860705, guid: da13813b5ab686b4b9388730828d3edf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000018606963
+      value: 0.000000018606963
       objectReference: {fileID: 0}
     - target: {fileID: 5668585967678860705, guid: da13813b5ab686b4b9388730828d3edf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000048841855
+      value: -0.0000000048841855
       objectReference: {fileID: 0}
     - target: {fileID: 5668585967678860705, guid: da13813b5ab686b4b9388730828d3edf,
         type: 3}
@@ -1032,35 +1032,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5668585967678860706, guid: da13813b5ab686b4b9388730828d3edf,
-        type: 3}
-      propertyPath: antialiasingMode
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5668585967678860717, guid: da13813b5ab686b4b9388730828d3edf,
         type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 5668585967678860718, guid: da13813b5ab686b4b9388730828d3edf,
-        type: 3}
-      propertyPath: m_RenderingPath
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5668585967678860718, guid: da13813b5ab686b4b9388730828d3edf,
-        type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0.13333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 5668585967678860718, guid: da13813b5ab686b4b9388730828d3edf,
-        type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0.07702916
-      objectReference: {fileID: 0}
-    - target: {fileID: 5668585967678860718, guid: da13813b5ab686b4b9388730828d3edf,
-        type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 0.043137256
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da13813b5ab686b4b9388730828d3edf, type: 3}

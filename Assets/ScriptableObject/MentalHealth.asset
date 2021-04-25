@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sentString: 
   sentInt: 0
-  sentFloat: 0
+  sentFloat: 54.401768
   sentBool: 0
