@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Settings;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -7,9 +8,16 @@ namespace Player {
     public class MentalHealth : MonoBehaviour {
         private float health;
         [SerializeField] private float tickInterval = 1;
-        [SerializeField] private float loseHealth = 0.5f;
+
+        // loseHealth = ax + b, with x corresponding to depth
+        [SerializeField] private float loseCoefficientA;
+
+        // loseHealth = ax + b, with x corresponding to depth
+        [SerializeField] private float loseCoefficientB;
         [SerializeField] private float maxHealth = 200f;
         [SerializeField] private GameEvent mentalHealthEvent;
+        [SerializeField] private GameEvent depthEvent;
+        [SerializeField] private PlayerData playerData;
 
         private float Health {
             get => health;
@@ -35,7 +43,8 @@ namespace Player {
         private IEnumerator CountDown() {
             while (Health > 0) {
                 yield return new WaitForSeconds(tickInterval);
-                Health -= loseHealth;
+                var depthPercent = depthEvent.sentFloat / playerData.maxDepth;
+                Health -= loseCoefficientA * depthPercent + loseCoefficientB;
             }
 
             mentalHealthEvent.sentFloat = 0;

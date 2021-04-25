@@ -97,7 +97,7 @@ namespace Player {
             }
 
             // depth of submarine?
-            var newDepth = referenceZeroDepth.position.y - transform.position.y;
+            var newDepth = Math.Max(referenceZeroDepth.position.y - transform.position.y, 0);
             if (Math.Abs(newDepth - _lastSentDepth) > playerData.minChangeDepth) {
                 _lastSentDepth = newDepth;
                 depthEvent.sentFloat = newDepth;

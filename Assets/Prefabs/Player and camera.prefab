@@ -513,9 +513,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tickInterval: 1
-  loseHealth: 2
+  loseCoefficientA: 4.5
+  loseCoefficientB: 0.5
   maxHealth: 200
   mentalHealthEvent: {fileID: 11400000, guid: 8b9b35a685c333b4783a682cc539c0af, type: 2}
+  depthEvent: {fileID: 11400000, guid: 75a7442fdf897fd44acd8c47fe2ef5fa, type: 2}
+  playerData: {fileID: 11400000, guid: ae01a080153326147b393a4e4574d85e, type: 2}
 --- !u!136 &903154724168184566
 CapsuleCollider:
   m_ObjectHideFlags: 0
