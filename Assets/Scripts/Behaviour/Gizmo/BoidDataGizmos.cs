@@ -17,7 +17,11 @@ namespace Behaviour.Gizmo
         private void OnDrawGizmosSelected()
         {
             if (!Application.isPlaying)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(transform.position, 15);
                 return;
+            }
 
             if (_boidData == null || !_boidData.m_activated)
                 return;
