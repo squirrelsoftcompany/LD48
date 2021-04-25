@@ -7,6 +7,7 @@ public class SoundManager : MonoBehaviour {
     [SerializeField] private AudioSource audioSourceAmbient;
     [SerializeField] private AudioSource audioSourceAcceleration;
     [SerializeField] private AudioSource audioSourceSonar;
+    [SerializeField] private AudioSource audioSourceBump;
 
     private bool shouldPlayBubbles;
     [CanBeNull] private IEnumerator bubbleLoop;
@@ -33,6 +34,10 @@ public class SoundManager : MonoBehaviour {
         audioSourceSonar.Play();
     }
 
+    public void playBump() {
+        audioSourceBump.Play();
+    }
+
     private IEnumerator loopDistantBubbles(float intervalSeconds) {
         while (shouldPlayBubbles) {
             yield return new WaitUntil(() => !audioSourceBubbles.isPlaying);
@@ -40,7 +45,7 @@ public class SoundManager : MonoBehaviour {
             yield return new WaitForSeconds(intervalSeconds);
         }
     }
-    
+
     public void playAcceleration(bool start) {
         if (start) {
             fadeAmbientToAcceleration();

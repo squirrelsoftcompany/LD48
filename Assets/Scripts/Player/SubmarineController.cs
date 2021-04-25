@@ -12,6 +12,7 @@ namespace Player {
         [SerializeField] private GameEvent bubbleEvent;
         [SerializeField] private GameEvent echolocationEvent;
         [SerializeField] private GameEvent depthEvent;
+        [SerializeField] private GameEvent bumpEvent;
         [SerializeField] private GameEvent accelerationEvent;
         [SerializeField] private Transform referenceZeroDepth;
         [SerializeField] private Transform referenceMaxDepth;
@@ -32,10 +33,7 @@ namespace Player {
         }
 
         private void echolocation() {
-            print("echolocation");
             echolocationEvent.Raise();
-            // todo ask for location of target
-            // todo for enemies: listen to echolocation event, and find my position/direction
         }
 
         private void OnEnable() {
@@ -44,6 +42,10 @@ namespace Player {
 
         private void OnDisable() {
             controls?.Disable();
+        }
+
+        private void OnCollisionEnter() {
+            bumpEvent.Raise();
         }
 
         private void OnValidate() {
