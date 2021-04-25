@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 4010951998426490701}
   - component: {fileID: 5618263755243142556}
   - component: {fileID: 2478747234006660289}
+  - component: {fileID: 903154724168184566}
   m_Layer: 0
   m_Name: Submarine Player
   m_TagString: Player
@@ -513,20 +514,20 @@ MonoBehaviour:
   loseHealth: 2
   maxHealth: 200
   mentalHealthEvent: {fileID: 11400000, guid: 8b9b35a685c333b4783a682cc539c0af, type: 2}
---- !u!136 &3290526073106188461
+--- !u!136 &903154724168184566
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4996087141994848383}
+  m_GameObject: {fileID: 4010951998426490702}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.9402907
-  m_Height: 9.363325
+  m_Height: 9.374786
   m_Direction: 2
-  m_Center: {x: 0.00017738342, y: -0.009617567, z: -0.17499638}
+  m_Center: {x: 0.00017738342, y: -0.009617567, z: 0.17549133}
 --- !u!1 &5766593037018335919
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,7 +552,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5766593037018335919}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.29, z: 5.75}
+  m_LocalPosition: {x: 0, y: 1.96, z: 3.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8351369997572096820}
@@ -650,12 +651,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9d41a4360af0fa94e85f77cddec93bd6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9d41a4360af0fa94e85f77cddec93bd6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.30999756
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9d41a4360af0fa94e85f77cddec93bd6,
         type: 3}
@@ -704,12 +705,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d41a4360af0fa94e85f77cddec93bd6, type: 3}
---- !u!1 &4996087141994848383 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8164078558771037576, guid: 9d41a4360af0fa94e85f77cddec93bd6,
-    type: 3}
-  m_PrefabInstance: {fileID: 3754041628463048183}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3716509305892815388 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9d41a4360af0fa94e85f77cddec93bd6,
@@ -736,12 +731,12 @@ PrefabInstance:
     - target: {fileID: 6812960665113685124, guid: cd790500697541b42901f46b7c78a59e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.47
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6812960665113685124, guid: cd790500697541b42901f46b7c78a59e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.37
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6812960665113685124, guid: cd790500697541b42901f46b7c78a59e,
         type: 3}
@@ -811,12 +806,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d066f993d4b74334eafea4b1958a5c65,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d066f993d4b74334eafea4b1958a5c65,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.30999756
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d066f993d4b74334eafea4b1958a5c65,
         type: 3}
