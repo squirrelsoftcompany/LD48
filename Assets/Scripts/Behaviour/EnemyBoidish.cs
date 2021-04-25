@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Profiling;
 
 namespace Behaviour
 {
@@ -52,6 +53,8 @@ namespace Behaviour
 
         private void FixedUpdate()
         {
+            Profiler.BeginSample("EnemyBoidish_FixedUpdate");
+
 #if UNITY_EDITOR
             // GIZMOS
             if (m_deepGizmos)
@@ -60,53 +63,52 @@ namespace Behaviour
             }
 #endif // UNITY_EDITOR
 
-            Vector3 directionSum = transform.forward; // self weight = 1
+            Vector3 directionSum = Vector3.zero;
+            EnemiesManager.BoidData selfData = new EnemiesManager.BoidData(){ position = gameObject.transform.position, forward = gameObject.transform.forward };
 
-            List<GameObject> relevantGOs = EnemiesManager.Get.RelevantGOs(gameObject);
+            var relevants = EnemiesManager.Get.RelevantBoidData(selfData);
 
-            foreach (var relevant in relevantGOs)
+            foreach (var pair in relevants)
             {
-                if (gameObject == relevant) // self direction already taken in count
-                    continue;
+                var settings = pair.Key;
+                var datum = pair.Value;
 
-                EnemiesManager.BoidSettings data = EnemiesManager.Get[relevant.tag];
-
-                Vector3 difference = relevant.transform.position - _rigidbody.position;
-                Vector3 direction = difference.normalized;
-                float distance = Mathf.Abs(difference.magnitude);
-
-                float w = data.GetWeight(distance);
-                Vector3 finalDirection = direction;
-                if (data.m_avoid) // avoid
+                foreach (var data in datum)
                 {
-                    Vector3 inter = RaySphereIntersection(transform.position, direction, relevant.transform.position, data.m_avoidanceRadius);
+                    Vector3 difference = data.position - selfData.position;
+                    Vector3 direction = difference.normalized;
+                    float distance = Mathf.Abs(difference.magnitude);
 
-                    Vector3 N = (inter - relevant.transform.position).normalized;
-                    Vector3 D = (inter - _rigidbody.position).normalized;
+                    float w = settings.GetWeight(distance);
+                    Vector3 finalDirection = direction;
+                    if (settings.m_avoid) // avoid
+                    {
+                        Vector3 inter = RaySphereIntersection(transform.position, direction, data.position, settings.m_avoidanceRadius);
 
-                    float cosTheta = Vector3.Dot(transform.forward, D);
-                    if (cosTheta < 0) // inter is behind this
-                        finalDirection = -D;
-                    else
-                        finalDirection = Vector3.Reflect(D, N);
-                }
+                        Vector3 N = (inter - data.position).normalized;
+                        Vector3 D = (inter - selfData.position).normalized;
 
-                directionSum += finalDirection * w;
+                        float cosTheta = Vector3.Dot(transform.forward, D);
+                        if (cosTheta < 0) // inter is behind this
+                            finalDirection = -D;
+                        else
+                            finalDirection = Vector3.Reflect(D, N);
+                    }
+
+                    directionSum += finalDirection * w;
 
 #if UNITY_EDITOR
-                // GIZMOS
-                if (m_deepGizmos)
-                {
-                    var gizmoData = new GizmoData();
-                    gizmoData.m_position = relevant.transform.position;
-                    gizmoData.m_direction = finalDirection;
-                    gizmoData.m_weight = w;
-                    _gizmoDatum.Add(gizmoData);
-                    //_gizmoDatum.Add(new GizmoData() { m_position = relevant.transform.position, m_direction = finalDirection, m_weight = w });
-                }
+                    // GIZMOS
+                    if (m_deepGizmos)
+                    {
+                        _gizmoDatum.Add(new GizmoData() { m_position = data.position, m_direction = finalDirection, m_weight = w });
+                    }
 #endif // UNITY_EDITOR
+                }
             }
             _wantedDirection = directionSum.normalized;
+
+            Profiler.EndSample();
         }
 
         Vector3 RaySphereIntersection(

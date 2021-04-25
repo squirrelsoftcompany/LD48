@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Attribute;
 using System.Linq;
+using UnityEngine.Profiling;
 
 namespace Behaviour
 {
@@ -25,9 +26,16 @@ namespace Behaviour
             }
         }
 
+        public struct BoidData
+        {
+            public Vector3 position;
+            public Vector3 forward;
+        }
+
         public List<BoidSettings> m_boidSettings;
 
         Dictionary<BoidSettings, List<GameObject>> _taggedGOs;
+        Dictionary<BoidSettings, List<BoidData>> _boidDatum;
 
         static EnemiesManager _inst;
         public static EnemiesManager Get => _inst;
@@ -47,6 +55,22 @@ namespace Behaviour
             return relevants;
         }
 
+        public Dictionary<BoidSettings, List<BoidData>> RelevantBoidData(BoidData self)
+        {
+            Dictionary<BoidSettings, List<BoidData>> relevants = new Dictionary<BoidSettings, List<BoidData>>();
+            foreach (var pair in _boidDatum)
+            {
+                BoidSettings settings = pair.Key;
+                List<BoidData> datum = pair.Value;
+
+                //  Get inside range
+                relevants[settings] = datum.FindAll(
+                    x => settings.m_relevantRadius == Mathf.Infinity ||
+                            Vector3.Distance(x.position, self.position) < pair.Key.m_relevantRadius);
+            }
+            return relevants;
+        }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -57,9 +81,25 @@ namespace Behaviour
             _taggedGOs = new Dictionary<BoidSettings, List<GameObject>>();
             foreach (var data in m_boidSettings)
             {
-                if (data.m_activated) // if not activated, then.... we don't care...
-                    _taggedGOs[data] = GameObject.FindGameObjectsWithTag(data.m_tag).ToList();
+                _taggedGOs[data] = GameObject.FindGameObjectsWithTag(data.m_tag).ToList();
             }
+
+            // init _boidDatum
+            _boidDatum = new Dictionary<BoidSettings, List<BoidData>>();
+        }
+
+        void FixedUpdate()
+        {
+            Profiler.BeginSample("EnemyBoidish_FixedUpdate");
+
+            _boidDatum.Clear();
+            foreach (var pair in _taggedGOs)
+            {
+                if (pair.Key.m_activated) // if not activated, then.... we don't care...
+                    _boidDatum[pair.Key] = pair.Value.ConvertAll(x => new BoidData { position = x.transform.position, forward = x.transform.forward });
+            }
+
+            Profiler.EndSample();
         }
     }
 }
