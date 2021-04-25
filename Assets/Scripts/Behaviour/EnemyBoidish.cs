@@ -24,8 +24,10 @@ namespace Behaviour
             _wantedDirection = transform.forward;
             _rigidbody = GetComponent<Rigidbody>();
 
+#if UNITY_EDITOR
             // GIZMOS
             _gizmoDatum = new List<GizmoData>();
+#endif // UNITY_EDITOR
         }
 
         // Update is called once per frame
@@ -50,11 +52,13 @@ namespace Behaviour
 
         private void FixedUpdate()
         {
+#if UNITY_EDITOR
             // GIZMOS
             if (m_deepGizmos)
             {
                 _gizmoDatum.Clear();
             }
+#endif // UNITY_EDITOR
 
             Vector3 directionSum = transform.forward; // self weight = 1
             
@@ -96,6 +100,7 @@ namespace Behaviour
 
                     directionSum += finalDirection * w;
 
+#if UNITY_EDITOR
                     // GIZMOS
                     if (m_deepGizmos)
                     {
@@ -107,6 +112,7 @@ namespace Behaviour
                         //_gizmoDatum.Add(new GizmoData() { m_position = relevant.transform.position, m_direction = finalDirection, m_weight = w });
                     }
                 }
+#endif // UNITY_EDITOR
             }
             _wantedDirection = directionSum.normalized;
         }
@@ -134,6 +140,7 @@ namespace Behaviour
             return Vector3.Lerp(rayPos, spherePos, initialD / Vector3.Distance(rayPos, spherePos));
         }
 
+#if UNITY_EDITOR
         // GIZMOS
         private struct GizmoData { public Vector3 m_position; public Vector3 m_direction; public float m_weight; }
         private List<GizmoData> _gizmoDatum;
@@ -159,5 +166,6 @@ namespace Behaviour
                 Gizmos.DrawLine(data.m_position, data.m_position + data.m_direction * 10 * data.m_weight);
             }
         }
+#endif // UNITY_EDITOR
     }
 }

@@ -6,6 +6,7 @@ namespace Behaviour.Gizmo
 {
     public class BoidDataGizmos : MonoBehaviour
     {
+#if UNITY_EDITOR
         Behaviour.EnemiesManager.BoidData _boidData;
 
         // Start is called before the first frame update
@@ -32,5 +33,6 @@ namespace Behaviour.Gizmo
             if (_boidData.m_avoidanceRadius != Mathf.Infinity)
                 Gizmos.DrawWireSphere(transform.position, _boidData.m_relevantRadius);
         }
+#endif // UNITY_EDITOR
     }
 }
