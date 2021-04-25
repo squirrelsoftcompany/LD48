@@ -33,11 +33,11 @@ namespace Player {
             StartCoroutine(_showCoroutine);
         }
 
-        private IEnumerator lookForNSeconds(Goal goal, float seconds) {
+        private IEnumerator lookForNSeconds(Component goal, float seconds) {
             var timeStart = Time.time;
             goalMarker.SetActive(true);
             while (Time.time - timeStart < seconds) {
-                goalMarker.transform.LookAt(goal.getMyPosition());
+                goalMarker.transform.LookAt(goal.transform);
                 yield return new WaitForFixedUpdate();
             }
 
