@@ -77,3 +77,7 @@ crashlytics-build.properties
 
 # Don't commit Git Extension for Unity
 /Assets/Tools*
+
+# Plugin Editor Odin
+Assets/Plugins/Sirenix*
+#Assets/Plugins/Sirenix.meta
