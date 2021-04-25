@@ -7,6 +7,7 @@ namespace Props {
         [SerializeField] private float bonusAmount;
         [SerializeField] private float coolDownSeconds;
         [SerializeField] private Light bonusLight;
+        private float _previousIntensity;
         private float _leftCoolDownTime;
 
         private void Start() {
@@ -28,6 +29,7 @@ namespace Props {
 
         private IEnumerator coolDown() {
             _leftCoolDownTime = coolDownSeconds;
+            _previousIntensity = bonusLight.intensity;
             bonusLight.intensity = 0.01f;
             var startTime = Time.time;
             while (_leftCoolDownTime > 0) {
@@ -35,7 +37,8 @@ namespace Props {
                 yield return new WaitForFixedUpdate();
                 _leftCoolDownTime = coolDownSeconds - elapsed;
             }
-            bonusLight.intensity = 1f;
+
+            bonusLight.intensity = _previousIntensity;
             _leftCoolDownTime = 0;
         }
     }
