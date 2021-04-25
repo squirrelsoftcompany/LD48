@@ -387,5 +387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f2e25557bc76d74c8af64fe732bafeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mDepth: 0
+  depthEvent: {fileID: 11400000, guid: 75a7442fdf897fd44acd8c47fe2ef5fa, type: 2}
+  playerData: {fileID: 11400000, guid: ae01a080153326147b393a4e4574d85e, type: 2}
   mPPPBlackVeil: {fileID: 11400000, guid: 6c5857b1eff51f844af6667ced0f7a35, type: 2}

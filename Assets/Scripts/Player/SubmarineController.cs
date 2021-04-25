@@ -28,7 +28,7 @@ namespace Player {
         private void Awake() {
             controls = new SubmarineInput();
             controls.Player.Echolocation.started += context => echolocation();
-            playerData.maxDepth = referenceMaxDepth.position.y - referenceZeroDepth.position.y;
+            playerData.maxDepth = referenceZeroDepth.position.y - referenceMaxDepth.position.y;
         }
 
         private void echolocation() {
