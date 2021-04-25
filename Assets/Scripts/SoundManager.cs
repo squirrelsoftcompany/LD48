@@ -6,8 +6,11 @@ public class SoundManager : MonoBehaviour {
     [SerializeField] private AudioSource audioSourceBubbles;
     [SerializeField] private AudioSource audioSourceAmbient;
     [SerializeField] private AudioSource audioSourceAcceleration;
+    [SerializeField] private AudioSource audioSourceSonar;
 
     private bool shouldPlayBubbles;
+    [CanBeNull] private IEnumerator bubbleLoop;
+    [CanBeNull] private IEnumerator fadeOutCoroutine, fadeInCoroutine;
 
     // Start is called before the first frame update
     private void Start() {
@@ -16,11 +19,18 @@ public class SoundManager : MonoBehaviour {
 
     public void playBubbles(bool start) {
         shouldPlayBubbles = start;
-        if (shouldPlayBubbles) {
-            StartCoroutine(loopDistantBubbles(3));
-        } else {
-            StopCoroutine(loopDistantBubbles(3));
+        if (bubbleLoop != null) {
+            StopCoroutine(bubbleLoop);
+            bubbleLoop = null;
         }
+
+        if (!shouldPlayBubbles) return;
+        bubbleLoop = loopDistantBubbles(3);
+        StartCoroutine(bubbleLoop);
+    }
+
+    public void playSonar() {
+        audioSourceSonar.Play();
     }
 
     private IEnumerator loopDistantBubbles(float intervalSeconds) {
@@ -30,9 +40,7 @@ public class SoundManager : MonoBehaviour {
             yield return new WaitForSeconds(intervalSeconds);
         }
     }
-
-    [CanBeNull] private IEnumerator fadeOutCoroutine, fadeInCoroutine;
-
+    
     public void playAcceleration(bool start) {
         if (start) {
             fadeAmbientToAcceleration();
