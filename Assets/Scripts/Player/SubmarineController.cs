@@ -12,11 +12,12 @@ namespace Player {
         [SerializeField] private GameEvent bubbleEvent;
         [SerializeField] private GameEvent echolocationEvent;
         [SerializeField] private GameEvent depthEvent;
+        [SerializeField] private GameEvent accelerationEvent;
         [SerializeField] private Transform referenceZeroDepth;
         [SerializeField] private Transform referenceMaxDepth;
         [SerializeField] private PlayerData playerData;
 
-        private bool _isGoingDown;
+        private bool _isGoingDown, _isAccelerating;
 
         // private float _depth;
         private float _lastSentDepth;
@@ -57,6 +58,7 @@ namespace Player {
         // Start is called before the first frame update
         private void Start() {
             _isGoingDown = false;
+            _isAccelerating = false;
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.maxAngularVelocity = Mathf.Deg2Rad * playerData.angularVelocity;
             _sqrMaxVelocity = playerData.maxVelocity * playerData.maxVelocity;
@@ -119,6 +121,15 @@ namespace Player {
             if (Keyboard.current.spaceKey.isPressed) {
                 // Acceleration
                 _rigidbody.AddForce(transform.forward * playerData.velocity, ForceMode.Impulse);
+                if (!_isAccelerating) {
+                    _isAccelerating = true;
+                    accelerationEvent.sentBool = true;
+                    accelerationEvent.Raise();
+                }
+            } else if (_isAccelerating) {
+                _isAccelerating = false;
+                accelerationEvent.sentBool = false;
+                accelerationEvent.Raise();
             }
 
             // do not allow z rotations!
