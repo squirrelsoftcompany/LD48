@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   maxHealth: 200
-  maxDepth: 200
+  maxDepth: -125.94
   velocity: 3
-  angularVelocity: 90
+  angularVelocity: 180
   maxVelocity: 10
   minChangeDepth: 0.5
