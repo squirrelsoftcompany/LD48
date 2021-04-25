@@ -16,7 +16,8 @@ namespace Props {
 
         public void respond() {
             var distance = Vector3.Distance(transform.position, player.transform.position);
-            var time = distance / CELERITE_SOUND;
+            // twice the distance
+            var time = distance * 2f / CELERITE_SOUND; 
             Invoke(nameof(play), time);
         }
 
