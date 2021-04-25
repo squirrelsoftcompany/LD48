@@ -306,8 +306,8 @@ MonoBehaviour:
   - m_tag: Environment
     m_activated: 1
     m_avoid: 1
-    m_maxWeight: 5
-    m_relevantRadius: 100
+    m_maxWeight: 8
+    m_relevantRadius: 60
     m_avoidanceRadius: 10
 --- !u!1 &50648619
 GameObject:
