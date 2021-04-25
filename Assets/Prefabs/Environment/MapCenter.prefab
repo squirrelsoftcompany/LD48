@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 2329196778354300228}
   - component: {fileID: 6134648072502477326}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MapCenter
   m_TagString: MapCenter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2329196778354300228
 Transform:
