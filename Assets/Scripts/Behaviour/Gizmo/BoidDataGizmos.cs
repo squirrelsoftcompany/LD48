@@ -23,8 +23,10 @@ namespace Behaviour.Gizmo
                 return;
 
             Gizmos.color = _boidData.m_avoid ? new Color(1, 0, 0, 0.8f) : new Color(0, 1, 0, 0.8f);
-            Gizmos.DrawSphere(transform.position, _boidData.m_avoidanceRadius);
-            Gizmos.DrawWireSphere(transform.position, _boidData.m_relevantRadius);
+            if (_boidData.m_relevantRadius != Mathf.Infinity)
+                Gizmos.DrawSphere(transform.position, _boidData.m_avoidanceRadius);
+            if (_boidData.m_avoidanceRadius != Mathf.Infinity)
+                Gizmos.DrawWireSphere(transform.position, _boidData.m_relevantRadius);
         }
     }
 }
