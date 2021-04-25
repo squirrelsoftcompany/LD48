@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 1342379505334593547}
   - component: {fileID: 7715770848615921956}
   - component: {fileID: 2513427453588768368}
+  - component: {fileID: 4245025356030571456}
   m_Layer: 0
   m_Name: Echolocation
   m_TagString: Untagged
@@ -142,6 +143,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  responseForSentString:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentInt:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentFloat:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentBool:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4245025356030571456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3048155552004169681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa39e69ee488484439cd909f5f2a3254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 2567d67d68f28754b9ec40f7ab3b60ad, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 7715770848615921956}
         m_TargetAssemblyTypeName: Player.Echolocation, Assembly-CSharp
         m_MethodName: showGoalLocation
@@ -1020,15 +1049,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6f876052ecb7b04ca50b10674df56b7, type: 3}
---- !u!4 &4898363815011331238 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
-    type: 3}
-  m_PrefabInstance: {fileID: 8163227536099981803}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4898363815011331237 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3653518665066583374, guid: a6f876052ecb7b04ca50b10674df56b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 8163227536099981803}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4898363815011331238 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3653518665066583373, guid: a6f876052ecb7b04ca50b10674df56b7,
     type: 3}
   m_PrefabInstance: {fileID: 8163227536099981803}
   m_PrefabAsset: {fileID: 0}
