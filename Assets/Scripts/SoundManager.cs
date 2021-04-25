@@ -8,14 +8,38 @@ public class SoundManager : MonoBehaviour {
     [SerializeField] private AudioSource audioSourceAcceleration;
     [SerializeField] private AudioSource audioSourceSonar;
     [SerializeField] private AudioSource audioSourceBump;
-
+    [SerializeField] private AudioSource audioSourceMusic;
+    [SerializeField] private AudioClip[] audioClipsMusic;
+    private int indexMusic;
     private bool shouldPlayBubbles;
     [CanBeNull] private IEnumerator bubbleLoop;
     [CanBeNull] private IEnumerator fadeOutCoroutine, fadeInCoroutine;
 
+    private bool musicOn;
+
     // Start is called before the first frame update
     private void Start() {
+        indexMusic = 0;
+        musicOn = true;
         shouldPlayBubbles = false;
+        StartCoroutine(playNextMusic());
+    }
+
+    private IEnumerator playNextMusic() {
+        while (musicOn) {
+            audioSourceMusic.clip = audioClipsMusic[indexMusic];
+            audioSourceMusic.Play();
+            yield return new WaitForSeconds(audioClipsMusic[indexMusic].length + 2);
+            indexMusic = (indexMusic + 1) % audioClipsMusic.Length;
+        }
+    }
+
+    private void OnEnable() {
+        musicOn = true;
+    }
+
+    private void OnDisable() {
+        musicOn = false;
     }
 
     public void playBubbles(bool start) {
