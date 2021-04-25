@@ -61,56 +61,48 @@ namespace Behaviour
 #endif // UNITY_EDITOR
 
             Vector3 directionSum = transform.forward; // self weight = 1
-            
-            foreach (var relevant in EnemiesManager.RelevantGos)
+
+            List<GameObject> relevantGOs = EnemiesManager.Get.RelevantGOs(gameObject);
+
+            foreach (var relevant in relevantGOs)
             {
                 if (gameObject == relevant) // self direction already taken in count
                     continue;
 
                 EnemiesManager.BoidData data = EnemiesManager.Get[relevant.tag];
-                if (data == null || ! data.m_activated) // boid data doesn't exist or is disactivated
-                    continue;
 
                 Vector3 difference = relevant.transform.position - _rigidbody.position;
                 Vector3 direction = difference.normalized;
                 float distance = Mathf.Abs(difference.magnitude);
 
-                if (distance < data.m_relevantRadius) // inside range
+                float w = data.GetWeight(distance);
+                Vector3 finalDirection = direction;
+                if (data.m_avoid) // avoid
                 {
-                    float w = data.GetWeight(distance);
-                    Vector3 finalDirection = direction;
-                    if (data.m_avoid) // avoid
-                    {
-                        //finalDirection = -direction;
-                        Vector3 inter = RaySphereIntersection(transform.position, direction, relevant.transform.position, data.m_avoidanceRadius);
+                    Vector3 inter = RaySphereIntersection(transform.position, direction, relevant.transform.position, data.m_avoidanceRadius);
 
-                        Vector3 N = inter - relevant.transform.position;
-                        N.Normalize();
-                        Vector3 D = inter - _rigidbody.position;
-                        D.Normalize();
-                        Vector3 R = D - 2 * (Vector3.Dot(D, N)) * N; // reflection vector
-                        R.Normalize();
+                    Vector3 N = (inter - relevant.transform.position).normalized;
+                    Vector3 D = (inter - _rigidbody.position).normalized;
 
-                        float cosTheta = Vector3.Dot(transform.forward, D);
-                        if (cosTheta < 0) // inter is behind this
-                            finalDirection = -D;
-                        else
-                            finalDirection = R;
-                    }
+                    float cosTheta = Vector3.Dot(transform.forward, D);
+                    if (cosTheta < 0) // inter is behind this
+                        finalDirection = -D;
+                    else
+                        finalDirection = Vector3.Reflect(D, N);
+                }
 
-                    directionSum += finalDirection * w;
+                directionSum += finalDirection * w;
 
 #if UNITY_EDITOR
-                    // GIZMOS
-                    if (m_deepGizmos)
-                    {
-                        var gizmoData = new GizmoData();
-                        gizmoData.m_position = relevant.transform.position;
-                        gizmoData.m_direction = finalDirection;
-                        gizmoData.m_weight = w;
-                        _gizmoDatum.Add(gizmoData);
-                        //_gizmoDatum.Add(new GizmoData() { m_position = relevant.transform.position, m_direction = finalDirection, m_weight = w });
-                    }
+                // GIZMOS
+                if (m_deepGizmos)
+                {
+                    var gizmoData = new GizmoData();
+                    gizmoData.m_position = relevant.transform.position;
+                    gizmoData.m_direction = finalDirection;
+                    gizmoData.m_weight = w;
+                    _gizmoDatum.Add(gizmoData);
+                    //_gizmoDatum.Add(new GizmoData() { m_position = relevant.transform.position, m_direction = finalDirection, m_weight = w });
                 }
 #endif // UNITY_EDITOR
             }
