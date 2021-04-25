@@ -9,7 +9,7 @@ namespace Behaviour
     public class EnemiesManager : MonoBehaviour
     {
         [System.Serializable]
-        public class BoidData
+        public class BoidSettings
         {
             [TagSelector] public string m_tag;
             public bool m_activated = true;
@@ -25,14 +25,14 @@ namespace Behaviour
             }
         }
 
-        public List<BoidData> m_boidDatum;
+        public List<BoidSettings> m_boidSettings;
 
-        Dictionary<BoidData, List<GameObject>> _taggedGOs;
+        Dictionary<BoidSettings, List<GameObject>> _taggedGOs;
 
         static EnemiesManager _inst;
         public static EnemiesManager Get => _inst;
-        public static List<BoidData> BoidDatum => _inst?.m_boidDatum;
-        public BoidData this[string tag] => m_boidDatum?.Find(d => d.m_tag == tag);
+        public static List<BoidSettings> BoidsSettings => _inst?.m_boidSettings;
+        public BoidSettings this[string tag] => m_boidSettings?.Find(d => d.m_tag == tag);
 
         public List<GameObject> RelevantGOs(GameObject go)
         {
@@ -54,8 +54,8 @@ namespace Behaviour
                 _inst = this;
 
             // get relevant gos
-            _taggedGOs = new Dictionary<BoidData, List<GameObject>>();
-            foreach (var data in m_boidDatum)
+            _taggedGOs = new Dictionary<BoidSettings, List<GameObject>>();
+            foreach (var data in m_boidSettings)
             {
                 if (data.m_activated) // if not activated, then.... we don't care...
                     _taggedGOs[data] = GameObject.FindGameObjectsWithTag(data.m_tag).ToList();

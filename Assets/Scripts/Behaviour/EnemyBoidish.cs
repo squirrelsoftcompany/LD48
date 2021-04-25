@@ -69,7 +69,7 @@ namespace Behaviour
                 if (gameObject == relevant) // self direction already taken in count
                     continue;
 
-                EnemiesManager.BoidData data = EnemiesManager.Get[relevant.tag];
+                EnemiesManager.BoidSettings data = EnemiesManager.Get[relevant.tag];
 
                 Vector3 difference = relevant.transform.position - _rigidbody.position;
                 Vector3 direction = difference.normalized;

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Behaviour.Gizmo
 {
-    public class BoidDataGizmos : MonoBehaviour
+    public class BoidSettingsGizmos : MonoBehaviour
     {
 #if UNITY_EDITOR
-        Behaviour.EnemiesManager.BoidData _boidData;
+        Behaviour.EnemiesManager.BoidSettings _boidData;
 
         // Start is called before the first frame update
         void Start()
