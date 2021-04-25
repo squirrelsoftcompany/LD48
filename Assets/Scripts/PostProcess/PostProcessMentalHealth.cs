@@ -47,7 +47,6 @@ public class PostProcessMentalHealth : MonoBehaviour
             // Change intensity between -0.2f and 0.2f 
             lGammaShift = Mathf.Clamp(lGammaShift, -0.2f, 0.2f);
             lColorGrading.gamma.value = new Vector4(1.0f, 1.0f, 1.0f, lGammaShift);
-            lColorGrading.gamma.value = new Vector4(1.0f, 1.0f, 1.0f, lGammaShift);
         }
         if (mPPPMentalHealth.TryGetSettings(out lLensDistortion))
         {
