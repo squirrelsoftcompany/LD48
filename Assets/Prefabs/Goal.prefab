@@ -193,6 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7976709511467303960}
   - component: {fileID: 7976709511467303963}
+  - component: {fileID: 979805138874784280}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Untagged
@@ -208,7 +209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7976709511467303961}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 888, y: 1.85, z: 477}
+  m_LocalPosition: {x: -352.66, y: -267.83, z: 896.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7976709511524007402}
@@ -228,6 +229,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 225d79350c951b940a2f8fd5cbe0284f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winEvent: {fileID: 11400000, guid: fa39757ac35fe4149867834df3b669d0, type: 2}
+--- !u!136 &979805138874784280
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7976709511467303961}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 4.7913284
+  m_Height: 18.973328
+  m_Direction: 2
+  m_Center: {x: 1.3745804, y: 1.6841431, z: -0.56552124}
 --- !u!1001 &3369859268082910112
 PrefabInstance:
   m_ObjectHideFlags: 0
