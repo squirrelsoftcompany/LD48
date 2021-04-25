@@ -14,9 +14,23 @@ namespace Player {
 
         // loseHealth = ax + b, with x corresponding to depth
         [SerializeField] private float loseCoefficientB;
-        [SerializeField] private float maxHealth = 200f;
+
+        // crazyStuffInterval = ax + b, with x corresponding to mental health (-> in seconds)
+        [SerializeField] private float crazyStuffIntervalA;
+
+        // crazyStuffInterval = ax + b, with x corresponding to mental health (-> in seconds)
+        [SerializeField] private float crazyStuffIntervalB;
+
+        // If we are in the interval when the crazy stuff happen, we have a possibility that the crazy stuff happen:
+        [SerializeField] private float percentChanceCrazy = 0.80f;
+
+        // Below this ratio of max health, we can start the crazy stuff
+        [SerializeField] private float thresholdCrazy = 0.8f;
+        private float _lastTimeCrazyStuff;
+
         [SerializeField] private GameEvent mentalHealthEvent;
         [SerializeField] private GameEvent depthEvent;
+        [SerializeField] private GameEvent crazyEvent;
         [SerializeField] private PlayerData playerData;
 
         private float Health {
@@ -31,7 +45,8 @@ namespace Player {
 
         // Start is called before the first frame update
         private void Start() {
-            Health = maxHealth;
+            _lastTimeCrazyStuff = 0;
+            Health = playerData.maxHealth;
             StartCoroutine(CountDown());
         }
 
@@ -49,6 +64,23 @@ namespace Player {
 
             mentalHealthEvent.sentFloat = 0;
             mentalHealthEvent.Raise();
+        }
+
+        private void Update() {
+            var ratioHealth = mentalHealthEvent.sentFloat / playerData.maxHealth;
+            if (ratioHealth >= thresholdCrazy) return;
+            // we are now crazy enough to do crazy stuff
+            var interval = Time.time - _lastTimeCrazyStuff;
+            if (interval < crazyStuffIntervalA * ratioHealth + crazyStuffIntervalB) return;
+            // Enough time has passed since we did something crazy 
+            if (UnityEngine.Random.value < percentChanceCrazy) return;
+            // do crazy stuff
+            _lastTimeCrazyStuff = Time.time;
+            doSomethingCrazy();
+        }
+
+        private void doSomethingCrazy() {
+            crazyEvent.Raise();
         }
     }
 }

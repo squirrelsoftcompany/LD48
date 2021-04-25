@@ -219,7 +219,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4010951996918530793}
-  m_LocalRotation: {x: 0.25389123, y: -0.000000018606963, z: 0.0000000048841855, w: 0.9672328}
+  m_LocalRotation: {x: 0.25389123, y: 0.000000018606963, z: -0.0000000048841855, w: 0.9672328}
   m_LocalPosition: {x: 881.2, y: 13.09, z: 422.41998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -373,6 +373,8 @@ GameObject:
   - component: {fileID: 5618263755243142556}
   - component: {fileID: 2478747234006660289}
   - component: {fileID: 903154724168184566}
+  - component: {fileID: 3962832340399492319}
+  - component: {fileID: 795518733990320358}
   m_Layer: 0
   m_Name: Submarine Player
   m_TagString: Player
@@ -544,9 +546,13 @@ MonoBehaviour:
   tickLoseInterval: 1
   loseCoefficientA: 4.5
   loseCoefficientB: 0.5
-  maxHealth: 200
+  crazyStuffIntervalA: 73.75
+  crazyStuffIntervalB: 1
+  percentChanceCrazy: 0.8
+  thresholdCrazy: 0.8
   mentalHealthEvent: {fileID: 11400000, guid: 8b9b35a685c333b4783a682cc539c0af, type: 2}
   depthEvent: {fileID: 11400000, guid: 75a7442fdf897fd44acd8c47fe2ef5fa, type: 2}
+  crazyEvent: {fileID: 11400000, guid: 1919ee76ea91fe94d88b39897f49d01d, type: 2}
   playerData: {fileID: 11400000, guid: ae01a080153326147b393a4e4574d85e, type: 2}
 --- !u!136 &903154724168184566
 CapsuleCollider:
@@ -562,6 +568,70 @@ CapsuleCollider:
   m_Height: 9.374786
   m_Direction: 2
   m_Center: {x: 0.00017738342, y: -0.009617567, z: 0.17549133}
+--- !u!114 &3962832340399492319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4010951998426490702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fdfbac01ab46799ee0d87c2dca6d15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minSpinDegrees: 50
+  maxSpinDegrees: 10
+  minForce: 0.98
+  maxForce: 11.32
+  minExplosion: 2.46
+  maxExplosion: 9.57
+  minExplosionRadius: 1.38
+  maxExplosionRadius: 6.32
+  maxDistanceExplosion: 5.12
+  minUpwardsModifier: 0.51
+  maxUpwardsModifier: 4.89
+  crazyAction: {fileID: 11400000, guid: 9bf1358f43988e446862e611b33ae2eb, type: 2}
+--- !u!114 &795518733990320358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4010951998426490702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa39e69ee488484439cd909f5f2a3254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 1919ee76ea91fe94d88b39897f49d01d, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3962832340399492319}
+        m_TargetAssemblyTypeName: Player.CrazyAction, Assembly-CSharp
+        m_MethodName: launchCrazy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  responseForSentString:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentInt:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentFloat:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentBool:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5766593037018335919
 GameObject:
   m_ObjectHideFlags: 0
