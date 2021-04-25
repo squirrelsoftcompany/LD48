@@ -9,13 +9,9 @@ namespace Player {
     [ExecuteInEditMode]
     public class SubmarineController : MonoBehaviour {
         private Rigidbody _rigidbody;
-        private float angularVelocity;
-        private float velocity;
-        private float maxVelocity;
         [SerializeField] private GameEvent bubbleEvent;
         [SerializeField] private GameEvent echolocationEvent;
         [SerializeField] private GameEvent depthEvent;
-        private float minChangeDepth = 0.5f;
         [SerializeField] private Transform referenceZeroDepth;
         [SerializeField] private Transform referenceMaxDepth;
         [SerializeField] private PlayerData playerData;
@@ -31,10 +27,6 @@ namespace Player {
         private void Awake() {
             controls = new SubmarineInput();
             controls.Player.Echolocation.started += context => echolocation();
-            velocity = playerData.velocity;
-            angularVelocity = playerData.angularVelocity;
-            maxVelocity = playerData.maxVelocity;
-            minChangeDepth = playerData.minChangeDepth;
             playerData.maxDepth = referenceMaxDepth.position.y - referenceZeroDepth.position.y;
         }
 
@@ -54,20 +46,20 @@ namespace Player {
         }
 
         private void OnValidate() {
-            setMaxVelocity(maxVelocity);
+            setMaxVelocity(playerData.maxVelocity);
         }
 
         private void setMaxVelocity(float value) {
-            maxVelocity = value;
-            _sqrMaxVelocity = maxVelocity * maxVelocity;
+            playerData.maxVelocity = value;
+            _sqrMaxVelocity = playerData.maxVelocity * playerData.maxVelocity;
         }
 
         // Start is called before the first frame update
         private void Start() {
             _isGoingDown = false;
             _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.maxAngularVelocity = Mathf.Deg2Rad * angularVelocity;
-            _sqrMaxVelocity = maxVelocity * maxVelocity;
+            _rigidbody.maxAngularVelocity = Mathf.Deg2Rad * playerData.angularVelocity;
+            _sqrMaxVelocity = playerData.maxVelocity * playerData.maxVelocity;
             _lastSentDepth = referenceZeroDepth.position.y;
         }
 
@@ -80,7 +72,7 @@ namespace Player {
         private void FixedUpdate() {
             if (_rigidbody.velocity.sqrMagnitude > _sqrMaxVelocity) {
                 // clamp velocity
-                _rigidbody.velocity = _rigidbody.velocity.normalized * maxVelocity;
+                _rigidbody.velocity = _rigidbody.velocity.normalized * playerData.maxVelocity;
             }
 
             // Is the submarine going down? 
@@ -102,7 +94,7 @@ namespace Player {
 
             // depth of submarine?
             var newDepth = referenceZeroDepth.position.y - transform.position.y;
-            if (Math.Abs(newDepth - _lastSentDepth) > minChangeDepth) {
+            if (Math.Abs(newDepth - _lastSentDepth) > playerData.minChangeDepth) {
                 _lastSentDepth = newDepth;
                 depthEvent.sentFloat = newDepth;
                 depthEvent.Raise();
@@ -111,20 +103,22 @@ namespace Player {
             // Add a rotational force
             if (_currentMove.y != 0) {
                 // up direction
-                _rigidbody.AddRelativeTorque(Vector3.left * (_currentMove.y * angularVelocity * Time.deltaTime));
+                _rigidbody.AddRelativeTorque(Vector3.left *
+                                             (_currentMove.y * playerData.angularVelocity * Time.deltaTime));
                 print("upDir: " + _currentMove.y);
             }
 
             if (_currentMove.x != 0) {
                 // left dir
-                _rigidbody.AddRelativeTorque(Vector3.up * (_currentMove.x * angularVelocity * Time.deltaTime));
+                _rigidbody.AddRelativeTorque(
+                    Vector3.up * (_currentMove.x * playerData.angularVelocity * Time.deltaTime));
                 print("leftDir: " + _currentMove.x);
             }
 
             // Accelerate
             if (Keyboard.current.spaceKey.isPressed) {
                 // Acceleration
-                _rigidbody.AddForce(transform.forward * velocity, ForceMode.Impulse);
+                _rigidbody.AddForce(transform.forward * playerData.velocity, ForceMode.Impulse);
             }
 
             // do not allow z rotations!
