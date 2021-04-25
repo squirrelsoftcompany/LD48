@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Props {
-    public class Objective : MonoBehaviour {
+    public class Goal : MonoBehaviour {
         // Start is called before the first frame update
         void Start() { }
 

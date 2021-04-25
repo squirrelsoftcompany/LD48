@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4645131167802981962}
   - component: {fileID: 1934167788805546934}
   m_Layer: 0
-  m_Name: Epave
+  m_Name: Epave model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
