@@ -400,6 +400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 272760446586275251}
   - component: {fileID: 272760446586275248}
+  - component: {fileID: 9161861562616330984}
   m_Layer: 0
   m_Name: Mental Health points
   m_TagString: Untagged
@@ -463,6 +464,20 @@ MonoBehaviour:
   responseForSentBool:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9161861562616330984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272760446586275250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b7f682fd991c8a43af2f010a477dae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 272760445644035086}
+  playerData: {fileID: 11400000, guid: ae01a080153326147b393a4e4574d85e, type: 2}
 --- !u!1 &272760447036007148
 GameObject:
   m_ObjectHideFlags: 0
