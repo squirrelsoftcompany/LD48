@@ -28,8 +28,6 @@ namespace Player {
 
         private void Awake() {
             controls = new SubmarineInput();
-            controls.Player.Echolocation.started += context => echolocation();
-            playerData.maxDepth = referenceZeroDepth.position.y - referenceMaxDepth.position.y;
         }
 
         private void echolocation() {
@@ -59,12 +57,15 @@ namespace Player {
 
         // Start is called before the first frame update
         private void Start() {
+            controls.Player.Echolocation.started += context => echolocation();
+            var zeroDepthY = referenceZeroDepth.position.y;
+            playerData.maxDepth = zeroDepthY - referenceMaxDepth.position.y;
             _isGoingDown = false;
             _isAccelerating = false;
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.maxAngularVelocity = Mathf.Deg2Rad * playerData.angularVelocity;
             _sqrMaxVelocity = playerData.maxVelocity * playerData.maxVelocity;
-            _lastSentDepth = referenceZeroDepth.position.y;
+            _lastSentDepth = zeroDepthY;
         }
 
         public void Move(InputAction.CallbackContext context) {
