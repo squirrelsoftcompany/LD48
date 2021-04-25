@@ -109,14 +109,12 @@ namespace Player {
                 // up direction
                 _rigidbody.AddRelativeTorque(Vector3.left *
                                              (_currentMove.y * playerData.angularVelocity * Time.deltaTime));
-                print("upDir: " + _currentMove.y);
             }
 
             if (_currentMove.x != 0) {
                 // left dir
                 _rigidbody.AddRelativeTorque(
                     Vector3.up * (_currentMove.x * playerData.angularVelocity * Time.deltaTime));
-                print("leftDir: " + _currentMove.x);
             }
 
             // Accelerate
