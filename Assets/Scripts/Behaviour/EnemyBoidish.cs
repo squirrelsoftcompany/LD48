@@ -12,6 +12,9 @@ namespace Behaviour
         [Tooltip("Angular velocity (deg/s)")]
         public float m_angularVelocity = 5;
 
+        [Space]
+        public bool m_deepGizmos = false;
+
         private Vector3 _wantedDirection;
         private Rigidbody _rigidbody;
 
@@ -48,7 +51,10 @@ namespace Behaviour
         private void FixedUpdate()
         {
             // GIZMOS
-            _gizmoDatum.Clear();
+            if (m_deepGizmos)
+            {
+                _gizmoDatum.Clear();
+            }
 
             Vector3 directionSum = transform.forward; // self weight = 1
             
@@ -91,11 +97,15 @@ namespace Behaviour
                     directionSum += finalDirection * w;
 
                     // GIZMOS
-                    var gizmoData = new GizmoData();
-                    gizmoData.m_position = relevant.transform.position;
-                    gizmoData.m_direction = finalDirection;
-                    gizmoData.m_weight = w;
-                    _gizmoDatum.Add(gizmoData);
+                    if (m_deepGizmos)
+                    {
+                        var gizmoData = new GizmoData();
+                        gizmoData.m_position = relevant.transform.position;
+                        gizmoData.m_direction = finalDirection;
+                        gizmoData.m_weight = w;
+                        _gizmoDatum.Add(gizmoData);
+                        //_gizmoDatum.Add(new GizmoData() { m_position = relevant.transform.position, m_direction = finalDirection, m_weight = w });
+                    }
                 }
             }
             _wantedDirection = directionSum.normalized;
@@ -140,7 +150,7 @@ namespace Behaviour
 
         private void OnDrawGizmosSelected()
         {
-            if (!Application.isPlaying)
+            if (!Application.isPlaying || !m_deepGizmos)
                 return;
 
             Gizmos.color = Color.green;
