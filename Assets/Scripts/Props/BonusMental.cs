@@ -6,7 +6,7 @@ namespace Props {
     public class BonusMental : MonoBehaviour {
         [SerializeField] private float bonusAmount;
         [SerializeField] private float coolDownSeconds;
-        [SerializeField] private Light light;
+        [SerializeField] private Light bonusLight;
         private float _leftCoolDownTime;
 
         private void Start() {
@@ -28,14 +28,14 @@ namespace Props {
 
         private IEnumerator coolDown() {
             _leftCoolDownTime = coolDownSeconds;
-            light.intensity = 0.01f;
+            bonusLight.intensity = 0.01f;
             var startTime = Time.time;
             while (_leftCoolDownTime > 0) {
                 var elapsed = Time.time - startTime;
                 yield return new WaitForFixedUpdate();
                 _leftCoolDownTime = coolDownSeconds - elapsed;
             }
-            light.intensity = 1f;
+            bonusLight.intensity = 1f;
             _leftCoolDownTime = 0;
         }
     }

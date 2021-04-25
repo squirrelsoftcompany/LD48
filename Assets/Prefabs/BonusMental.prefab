@@ -141,7 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bonusAmount: 10
   coolDownSeconds: 20
-  light: {fileID: 0}
+  bonusLight: {fileID: 8293562731724248628}
 --- !u!136 &8293562732083081999
 CapsuleCollider:
   m_ObjectHideFlags: 0
