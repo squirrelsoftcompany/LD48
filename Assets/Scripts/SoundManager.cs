@@ -80,16 +80,16 @@ public class SoundManager : MonoBehaviour {
 
     private void fadeAccelerationToAmbient() {
         killAllCoroutines();
-        fadeOutCoroutine = fadeOut(audioSourceAcceleration, 0.5f, 0.2f);
-        fadeInCoroutine = fadeIn(audioSourceAmbient, 0.5f, 0.9f);
+        fadeOutCoroutine = fadeOut(audioSourceAcceleration, 0.5f, 0.1f);
+        fadeInCoroutine = fadeIn(audioSourceAmbient, 0.5f, 0.5f);
         StartCoroutine(fadeOutCoroutine);
         StartCoroutine(fadeInCoroutine);
     }
 
     private void fadeAmbientToAcceleration() {
         killAllCoroutines();
-        fadeOutCoroutine = fadeOut(audioSourceAmbient, 0.5f, 0.2f);
-        fadeInCoroutine = fadeIn(audioSourceAcceleration, 0.5f, 0.9f);
+        fadeOutCoroutine = fadeOut(audioSourceAmbient, 0.5f, 0.1f);
+        fadeInCoroutine = fadeIn(audioSourceAcceleration, 0.5f, 0.5f);
         StartCoroutine(fadeOutCoroutine);
         StartCoroutine(fadeInCoroutine);
     }
