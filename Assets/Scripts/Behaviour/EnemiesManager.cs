@@ -19,11 +19,14 @@ namespace Behaviour
             public float m_maxWeight;
             public float m_relevantRadius;
             public float m_avoidanceRadius;
+            public AnimationCurve m_curve = AnimationCurve.Linear(0, 1, 1, 0);
 
             public float GetWeight(float distance)
             {
                 float range = m_relevantRadius - m_avoidanceRadius;
-                return range > 0 ? Mathf.Lerp(m_maxWeight, 0, (distance - m_avoidanceRadius) / range) : m_maxWeight;
+                if (range <= 0)
+                    return m_maxWeight;
+                return m_maxWeight * m_curve.Evaluate((distance - m_avoidanceRadius) / range);
             }
         }
 
@@ -64,10 +67,14 @@ namespace Behaviour
                 BoidSettings settings = pair.Key;
                 List<BoidData> datum = pair.Value;
 
-                //  Get inside range
-                relevants[settings] = datum.FindAll(
-                    x => settings.m_relevantRadius == Mathf.Infinity ||
-                            Vector3.Distance(x.position, self.position) < pair.Key.m_relevantRadius);
+                // Get those inside range
+                relevants[settings] = datum.FindAll(x =>
+                    {
+                        float d = Vector3.Distance(x.position, self.position); // d can't be negative
+                        // if x not at self.position and weight at this distance is not null
+                        return d > 0 && settings.GetWeight(d) != 0;
+                    });
+
                 if (settings.m_backCulling)
                 {
                     // Back Culling
