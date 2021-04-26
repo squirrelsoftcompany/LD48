@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 908398558861121749}
   - component: {fileID: 908398558861121746}
   - component: {fileID: 908398558861121747}
+  - component: {fileID: 4547206744700926496}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -94,7 +95,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908398558861121744}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -104,6 +105,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 119
+--- !u!114 &4547206744700926496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908398558861121744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e85e684a649e5714c9426d6cf3e2a1cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 7609934482223908893}
+  playImage: {fileID: 21300000, guid: d46301f11b8c76d48ba11e9ce35a7953, type: 3}
+  pauseImage: {fileID: 21300000, guid: 8ae4df19177617d41b761065eddc1a5c, type: 3}
 --- !u!1 &2279406685051953136
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2347050243114902334
 RectTransform:
   m_ObjectHideFlags: 0
@@ -191,7 +207,6 @@ GameObject:
   - component: {fileID: 4904509384220604667}
   - component: {fileID: 7609934482223908893}
   - component: {fileID: 7939694952103183712}
-  - component: {fileID: 7002307025098723540}
   m_Layer: 5
   m_Name: Pause
   m_TagString: Untagged
@@ -300,7 +315,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7002307025098723540}
+      - m_Target: {fileID: 4547206744700926496}
         m_TargetAssemblyTypeName: UI.Menu, Assembly-CSharp
         m_MethodName: togglePlayPause
         m_Mode: 1
@@ -312,21 +327,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7002307025098723540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3838870117285296357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e85e684a649e5714c9426d6cf3e2a1cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  image: {fileID: 7609934482223908893}
-  playImage: {fileID: 21300000, guid: d46301f11b8c76d48ba11e9ce35a7953, type: 3}
-  pauseImage: {fileID: 21300000, guid: 8ae4df19177617d41b761065eddc1a5c, type: 3}
 --- !u!1 &8998358082466511637
 GameObject:
   m_ObjectHideFlags: 0
