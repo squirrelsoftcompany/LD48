@@ -34,21 +34,6 @@ namespace Behaviour
         // Update is called once per frame
         void Update()
         {
-            Vector3 currentDirection = transform.forward;
-            float lRadAngularVelocity = m_angularVelocity * Mathf.Deg2Rad;
-            float lCosTheta = Vector3.Dot(currentDirection, _wantedDirection);
-
-            if (lCosTheta < 1 - Mathf.Epsilon)
-            {
-                Quaternion.FromToRotation(currentDirection, _wantedDirection).ToAngleAxis(out float lAngle, out Vector3 lAxis);
-                _rigidbody.angularVelocity = lAxis * Mathf.Min(lAngle, lRadAngularVelocity);
-            }
-            else
-            {
-                _rigidbody.angularVelocity = Vector3.zero;
-            }
-            _rigidbody.maxAngularVelocity = lRadAngularVelocity;
-            _rigidbody.velocity = transform.forward * m_forwardVelocity;
         }
 
         private void FixedUpdate()
@@ -104,6 +89,27 @@ namespace Behaviour
             _wantedDirection = directionSum.normalized;
 
             Profiler.EndSample();
+
+            // Apply
+            float lRadAngularVelocity = m_angularVelocity * Mathf.Deg2Rad;
+            float lCosTheta = Vector3.Dot(selfData.forward, _wantedDirection);
+
+            // compute rotation function based on current and wanted direction and angular velocity
+            if (lCosTheta < 1 - Mathf.Epsilon)
+            {
+                Quaternion.FromToRotation(selfData.forward, _wantedDirection).ToAngleAxis(out float lAngle, out Vector3 lAxis);
+                _rigidbody.angularVelocity = lAxis * Mathf.Min(lAngle, lRadAngularVelocity);
+            }
+            else
+            {
+                _rigidbody.angularVelocity = Vector3.zero;
+            }
+            // decrease velocity when there huge rotation to do
+            float forwardVelocity = Mathf.Lerp(m_forwardVelocity/ 2, m_forwardVelocity, lCosTheta);
+
+            _rigidbody.maxAngularVelocity = lRadAngularVelocity;
+            //_rigidbody.velocity = transform.forward * forwardVelocity;
+            _rigidbody.AddForce(transform.forward * forwardVelocity);
         }
 
         Vector3 RaySphereIntersection(
