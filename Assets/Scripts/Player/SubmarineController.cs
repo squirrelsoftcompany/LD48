@@ -46,17 +46,17 @@ namespace Player {
         private void OnCollisionEnter(Collision target) {
             if (!target.gameObject.CompareTag("Bounds")) { 
                 bumpEvent.Raise(); 
-            } 
+            }
         }
 
         private void OnTriggerEnter(Collider target) {
-            if (target.tag == "Bounds") {
+            if (target.CompareTag("Bounds")) {
                 outOfBoundsEvent.sentBool = true;
                 outOfBoundsEvent.Raise();
             }
         }
         private void OnTriggerExit(Collider target) {
-            if (target.tag == "Bounds"){
+            if (target.CompareTag("Bounds")){
                 outOfBoundsEvent.sentBool = false;
                 outOfBoundsEvent.Raise();
             }
