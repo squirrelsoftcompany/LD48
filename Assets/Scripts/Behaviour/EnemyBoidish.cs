@@ -93,22 +93,23 @@ namespace Behaviour
             // Apply
             float lRadAngularVelocity = m_angularVelocity * Mathf.Deg2Rad;
             float lCosTheta = Vector3.Dot(selfData.forward, _wantedDirection);
+            _rigidbody.maxAngularVelocity = lRadAngularVelocity;
 
             // compute rotation function based on current and wanted direction and angular velocity
             if (lCosTheta < 1 - Mathf.Epsilon)
             {
-                Quaternion.FromToRotation(selfData.forward, _wantedDirection).ToAngleAxis(out float lAngle, out Vector3 lAxis);
-                _rigidbody.angularVelocity = lAxis * Mathf.Min(lAngle, lRadAngularVelocity);
-            }
-            else
-            {
-                _rigidbody.angularVelocity = Vector3.zero;
-            }
-            // decrease velocity when there huge rotation to do
-            float forwardVelocity = Mathf.Lerp(m_forwardVelocity/ 2, m_forwardVelocity, lCosTheta);
+                // get axis and angle
+                Vector3 rotationAxis = Vector3.Cross(selfData.forward, _wantedDirection);
+                float theta = Mathf.Asin(rotationAxis.magnitude);
+                Vector3 w = rotationAxis.normalized * Mathf.Min(theta, lRadAngularVelocity) / Time.fixedDeltaTime;
 
-            _rigidbody.maxAngularVelocity = lRadAngularVelocity;
-            //_rigidbody.velocity = transform.forward * forwardVelocity;
+                // compute tensor
+                Quaternion q = transform.rotation * _rigidbody.inertiaTensorRotation;
+                Vector3 tensor = q * Vector3.Scale(_rigidbody.inertiaTensor, (Quaternion.Inverse(q) * w));
+                _rigidbody.AddTorque(tensor, ForceMode.Impulse);
+            }
+            // decrease velocity when there is huge rotation to do
+            float forwardVelocity = Mathf.Lerp(m_forwardVelocity/ 2, m_forwardVelocity, lCosTheta);
             _rigidbody.AddForce(transform.forward * forwardVelocity);
         }
 
