@@ -36,6 +36,7 @@ namespace Player {
         [SerializeField] private GameEvent depthEvent;
         [SerializeField] private GameEvent crazyEvent;
         [SerializeField] private PlayerData playerData;
+        [SerializeField] private GameEvent mentalGainEvent;
 
         private float Health {
             get => health;
@@ -45,7 +46,6 @@ namespace Player {
                 mentalHealthEvent.Raise();
             }
         }
-
 
         // Start is called before the first frame update
         private void Start() {
@@ -59,6 +59,7 @@ namespace Player {
         public void gainHealth(float amount) {
             Assert.IsTrue(amount > 0);
             Health += amount;
+            mentalGainEvent.Raise();
         }
 
         private IEnumerator CountDown() {
