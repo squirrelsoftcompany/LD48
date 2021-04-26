@@ -44,7 +44,7 @@ namespace Player {
         }
 
         private void OnCollisionEnter(Collision target) {
-            if (target.gameObject.CompareTag("Bounds")) { 
+            if (!target.gameObject.CompareTag("Bounds")) { 
                 bumpEvent.Raise(); 
             } 
         }
