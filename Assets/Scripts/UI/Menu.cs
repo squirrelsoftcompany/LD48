@@ -5,11 +5,18 @@ namespace UI {
     public class Menu : MonoBehaviour {
         [SerializeField] private Image image;
         [SerializeField] private Sprite playImage, pauseImage;
-        [SerializeField] private GameObject winScreen, loseScreen, pauseScreen;
+        [SerializeField] private GameObject winScreen, loseScreen, pauseScreen, startScreen;
         private bool isRunning;
 
         private void Start() {
+            isRunning = false;
+            Time.timeScale = 0;
+        }
+
+        public void PlayGame() {
             isRunning = true;
+            startScreen.SetActive(false);
+            Time.timeScale = 1f;
         }
 
         public void togglePlayPause() {
