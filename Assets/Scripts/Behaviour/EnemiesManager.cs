@@ -15,7 +15,8 @@ namespace Behaviour
             [TagSelector] public string m_tag;
             public bool m_activated = true;
             public bool m_avoid = false;
-            public bool m_backCulling = false;
+            public bool m_myBackCulling = false;
+            public bool m_itsBackCulling = false;
             public float m_maxWeight;
             public float m_relevantRadius;
             public float m_avoidanceRadius;
@@ -75,14 +76,14 @@ namespace Behaviour
                         return d > 0 && settings.GetWeight(d) != 0;
                     });
 
-                if (settings.m_backCulling)
+                if (settings.m_myBackCulling || settings.m_itsBackCulling)
                 {
                     // Back Culling
                     relevants[settings] = relevants[settings].FindAll(x =>
                         {
                             Vector3 selfToX = x.position - self.position;
-                            return Vector3.Dot(self.forward, selfToX) > 0
-                                && Vector3.Dot(x.forward, -selfToX) > 0;
+                            return (! settings.m_myBackCulling || Vector3.Dot(self.forward, selfToX) > 0) // cull if x is in self's back
+                                && (! settings.m_itsBackCulling || Vector3.Dot(x.forward, -selfToX) > 0); // cull if self is in x's back
                         });
                 }
             }
