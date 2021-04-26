@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +5,7 @@ namespace UI {
     public class Menu : MonoBehaviour {
         [SerializeField] private Image image;
         [SerializeField] private Sprite playImage, pauseImage;
-        [SerializeField] private GameObject winScreen, loseScreen;
+        [SerializeField] private GameObject winScreen, loseScreen, pauseScreen;
         private bool isRunning;
 
         private void Start() {
@@ -25,12 +24,14 @@ namespace UI {
             Time.timeScale = 0;
             isRunning = false;
             image.sprite = playImage;
+            pauseScreen.SetActive(true);
         }
 
         private void resume() {
             Time.timeScale = 1;
             isRunning = true;
             image.sprite = pauseImage;
+            pauseScreen.SetActive(false);
         }
 
         public void lose() {
