@@ -374,6 +374,7 @@ GameObject:
   - component: {fileID: 903154724168184566}
   - component: {fileID: 3962832340399492319}
   - component: {fileID: 795518733990320358}
+  - component: {fileID: 8639871519897405785}
   m_Layer: 0
   m_Name: Submarine Player
   m_TagString: Player
@@ -631,6 +632,19 @@ MonoBehaviour:
   responseForSentBool:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8639871519897405785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4010951998426490702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba82b9bcadea846469499790a20bbbb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loseEvent: {fileID: 11400000, guid: d012caa48f8049d409b0925b3196f124, type: 2}
 --- !u!1 &5766593037018335919
 GameObject:
   m_ObjectHideFlags: 0
