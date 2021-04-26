@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class AvoidEditor : EditorWindow
 {
-    public Terrain m_terrain;
-    public GameObject m_prefabMapCenter;
-    public GameObject m_prefabAvoid;
+    public List<Terrain> m_terrainComp = null;
+    public GameObject m_terrainRoot = null;
+    public GameObject m_prefabMapCenter = null;
+    public GameObject m_prefabAvoid = null;
     public Vector3 m_stepsRelief;
     public Vector3 m_stepsBounds;
 
@@ -24,6 +26,8 @@ public class AvoidEditor : EditorWindow
         AvoidEditor window = (AvoidEditor)GetWindow(typeof(AvoidEditor));
         window.name = "Avoid Editor";
         window.position = new Rect(window.position.position, new Vector2(320, 430));
+        window.m_terrainComp = new List<Terrain>();
+        window.m_terrainRoot = null;
         window.Show();
     }
 
@@ -40,20 +44,21 @@ public class AvoidEditor : EditorWindow
         m_scrollPosition = EditorGUILayout.BeginScrollView(m_scrollPosition, GUIStyle.none, GUI.skin.verticalScrollbar);
         EditorGUILayout.BeginVertical();
         {
-            PutErrorColor(m_terrain);
-            m_terrain = EditorGUILayout.ObjectField("Terrain", m_terrain, typeof(Terrain), true) as Terrain;
+            PutErrorColor(m_terrainComp);
+            m_terrainRoot = EditorGUILayout.ObjectField("Terrain Root", m_terrainRoot, typeof(GameObject), true) as GameObject;
             ResetErrorColor();
-            Vector3 lTerrainSize = m_terrain ? m_terrain.terrainData.size : Vector3.positiveInfinity;
+            m_terrainComp = m_terrainRoot ? m_terrainRoot.GetComponentsInChildren<Terrain>().ToList() : null;
+            Bounds lTerrainBounds = DrawTerrainBounds.GetTerrainBounds(m_terrainComp, m_terrainRoot);
 
             EditorGUILayout.Space(20);
             EditorGUILayout.LabelField("MAP CENTER", mainLabelStyle);
             PutErrorColor(m_prefabMapCenter);
             m_prefabMapCenter = EditorGUILayout.ObjectField("Prefab", m_prefabMapCenter, typeof(GameObject), false) as GameObject;
             ResetErrorColor();
-            GUI.enabled = m_terrain != null && m_prefabMapCenter != null;
+            GUI.enabled = ValidList(m_terrainComp) && m_prefabMapCenter != null;
             if (GUILayout.Button("Generate Map Center"))
             {
-                Instantiate(m_prefabMapCenter, m_terrain.transform, lTerrainSize / 2);
+                Instantiate(m_prefabMapCenter, m_terrainRoot.transform, lTerrainBounds.center);
             }
             GUI.enabled = true;
 
@@ -68,10 +73,10 @@ public class AvoidEditor : EditorWindow
             PutErrorColor(m_stepsRelief);
             m_stepsRelief = EditorGUILayout.Vector3Field("Steps", m_stepsRelief);
             ResetErrorColor();
-            GUI.enabled = m_terrain != null && m_prefabAvoid != null && ValidVector(m_stepsRelief);
+            GUI.enabled = ValidList(m_terrainComp) && m_prefabAvoid != null && ValidVector(m_stepsRelief);
             if (GUILayout.Button("Generate Avoid Relief"))
             {
-                InstantiateRelief(m_terrain.transform, m_stepsRelief, lTerrainSize);
+                InstantiateRelief(m_terrainRoot.transform, m_stepsRelief, lTerrainBounds.size, lTerrainBounds.center);
             }
             GUI.enabled = true;
 
@@ -120,11 +125,11 @@ public class AvoidEditor : EditorWindow
             }
             EditorGUILayout.EndHorizontal();
 
-            GUI.enabled = m_terrain != null && m_prefabAvoid != null && ValidVector(m_stepsBounds)
+            GUI.enabled = ValidList(m_terrainComp) && m_prefabAvoid != null && ValidVector(m_stepsBounds)
                 && (m_top || m_bottom || m_front || m_back || m_right || m_left) == true;
             if (GUILayout.Button("Generate Avoid Bound"))
             {
-                InstantiateBounds(m_terrain.transform, m_stepsBounds, lTerrainSize);
+                InstantiateBounds(m_terrainRoot.transform, m_stepsBounds, lTerrainBounds.size, lTerrainBounds.center);
             }
             GUI.enabled = true;
         }
@@ -133,6 +138,10 @@ public class AvoidEditor : EditorWindow
     }
 
     // WINDOW UTILS
+    void PutErrorColor<T>(List<T> l)
+    {
+        GUI.backgroundColor = ValidList<T>(l) ? Color.white : Color.red;
+    }
 
     void PutErrorColor(Object o)
     {
@@ -149,6 +158,11 @@ public class AvoidEditor : EditorWindow
         return vec3.x != 0 && vec3.y != 0 && vec3.z != 0;
     }
 
+    bool ValidList<T>(List<T> l)
+    {
+        return l != null && l.Count > 0;
+    }
+
     void ResetErrorColor()
     {
         GUI.backgroundColor = Color.white;
@@ -156,25 +170,31 @@ public class AvoidEditor : EditorWindow
 
     // INSTANTIATOR
     
-    void InstantiateRelief(Transform parent, Vector3 steps, Vector3 size)
+    void InstantiateRelief(Transform parent, Vector3 steps, Vector3 size, Vector3 origin)
     {
-        Vector3 origin = size / 2;
         GameObject wallBottom = InstantiateAvoidWall(origin, parent, new Vector2(steps.x, steps.z), new Vector2(size.x, size.z), size.y / 2, "Bottom");
 
         // apply height
-        Vector3 lTerrainPosition = m_terrain.GetPosition();
         foreach (Transform avoid in wallBottom.transform)
         {
-            float h = m_terrain.SampleHeight(avoid.position);
+            Vector3 avoidPos = avoid.transform.position;
+            var closestTerrain = m_terrainComp.Find(x =>
+                {
+                    var b = x.terrainData.bounds;
+                    b.center += x.GetPosition();
+                    Vector3 projectedAvoidPos = new Vector3(avoidPos.x, b.center.y, avoidPos.z);
+                    return b.Contains(projectedAvoidPos);
+                });
+
+            float h = closestTerrain.SampleHeight(avoid.position);
             avoid.position += Vector3.up * h;
-            Vector3 N = m_terrain.terrainData.GetInterpolatedNormal((avoid.localPosition.x + origin.x) / size.x, (avoid.localPosition.y + origin.y) / size.y);
+            Vector3 N = closestTerrain.terrainData.GetInterpolatedNormal((avoid.localPosition.x + origin.x) / size.x, (avoid.localPosition.y + origin.y) / size.y);
             avoid.LookAt(avoid.position + N);
         }
     }
 
-    void InstantiateBounds(Transform parent, Vector3 steps, Vector3 size)
+    void InstantiateBounds(Transform parent, Vector3 steps, Vector3 size, Vector3 origin)
     {
-        Vector3 origin = size/2;
         if (m_bottom)
         {
             GameObject wallBottom = InstantiateAvoidWall(origin, parent, new Vector2(steps.x, steps.z), new Vector2(size.x, size.z), size.y / 2, "Bottom");
