@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour {
     [SerializeField] private AudioSource audioSourceSpin;
     [SerializeField] private AudioSource audioSourcePush;
     [SerializeField] private AudioSource audioSourceExplosion;
+    [SerializeField] private AudioSource audioSourceMentalUp;
     private int indexMusic;
     private bool shouldPlayBubbles;
     [CanBeNull] private IEnumerator bubbleLoop;
@@ -63,6 +64,10 @@ public class SoundManager : MonoBehaviour {
 
     public void playBump() {
         audioSourceBump.Play();
+    }
+
+    public void playMentalUp() {
+        audioSourceMentalUp.Play();
     }
 
     public void playCrazy(int crazyType) {
