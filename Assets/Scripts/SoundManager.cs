@@ -20,12 +20,15 @@ public class SoundManager : MonoBehaviour {
     [CanBeNull] private IEnumerator fadeOutCoroutine, fadeInCoroutine;
 
     private bool musicOn;
+    private bool _shouldPlayMental;
+    private IEnumerator _mentalLoop;
 
     // Start is called before the first frame update
     private void Start() {
         indexMusic = 0;
         musicOn = true;
         shouldPlayBubbles = false;
+        _shouldPlayMental = false;
         StartCoroutine(playNextMusic());
     }
 
@@ -66,7 +69,16 @@ public class SoundManager : MonoBehaviour {
         audioSourceBump.Play();
     }
 
-    public void playMentalUp() {
+    public void playMentalUp(bool start) {
+        _shouldPlayMental = start;
+        if (_mentalLoop != null) {
+            StopCoroutine(_mentalLoop);
+            _mentalLoop = null;
+        }
+
+        if (!_shouldPlayMental) return;
+        _mentalLoop = loopDistantMental(3);
+        StartCoroutine(_mentalLoop);
         audioSourceMentalUp.Play();
     }
 
@@ -100,6 +112,14 @@ public class SoundManager : MonoBehaviour {
         while (shouldPlayBubbles) {
             yield return new WaitUntil(() => !audioSourceBubbles.isPlaying);
             audioSourceBubbles.Play();
+            yield return new WaitForSeconds(intervalSeconds);
+        }
+    }
+
+    private IEnumerator loopDistantMental(float intervalSeconds) {
+        while (_shouldPlayMental) {
+            yield return new WaitUntil(() => !audioSourceMentalUp.isPlaying);
+            audioSourceMentalUp.Play();
             yield return new WaitForSeconds(intervalSeconds);
         }
     }

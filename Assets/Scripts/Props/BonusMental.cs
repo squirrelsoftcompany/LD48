@@ -1,45 +1,27 @@
-using System.Collections;
 using Player;
 using UnityEngine;
 
 namespace Props {
     public class BonusMental : MonoBehaviour {
-        [SerializeField] private float bonusAmount;
-        [SerializeField] private float coolDownSeconds;
-        [SerializeField] private Light bonusLight;
-        private float _previousIntensity;
-        private float _leftCoolDownTime;
-
-        private void Start() {
-            _leftCoolDownTime = 0;
-        }
-
+        [Tooltip("Bonus health per second")] [SerializeField] [Range(0.1f, 50)]
+        private float bonusAmountPerSecond;
+        
         private void OnTriggerEnter(Collider other) {
-            if (_leftCoolDownTime > 0) return;
-
             var otherHealth = other.GetComponent<MentalHealth>();
             if (otherHealth == null) return;
-            otherHealth.gainHealth(bonusAmount);
-            sendToCoolDown();
+            otherHealth.startGainHealth();
         }
 
-        private void sendToCoolDown() {
-            StartCoroutine(coolDown());
+        private void OnTriggerStay(Collider other) {
+            var otherHealth = other.GetComponent<MentalHealth>();
+            if (otherHealth == null) return;
+            otherHealth.gainHealth(bonusAmountPerSecond * Time.fixedDeltaTime);
         }
 
-        private IEnumerator coolDown() {
-            _leftCoolDownTime = coolDownSeconds;
-            _previousIntensity = bonusLight.intensity;
-            bonusLight.intensity = 0.01f;
-            var startTime = Time.time;
-            while (_leftCoolDownTime > 0) {
-                var elapsed = Time.time - startTime;
-                yield return new WaitForFixedUpdate();
-                _leftCoolDownTime = coolDownSeconds - elapsed;
-            }
-
-            bonusLight.intensity = _previousIntensity;
-            _leftCoolDownTime = 0;
+        private void OnTriggerExit(Collider other) {
+            var otherHealth = other.GetComponent<MentalHealth>();
+            if (otherHealth == null) return;
+            otherHealth.endGainHealth();
         }
     }
 }

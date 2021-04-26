@@ -44,7 +44,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: ce6272e6111c5934f9f044e21b02477c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.229
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -799,19 +799,7 @@ MonoBehaviour:
   gameEvent: {fileID: 11400000, guid: 3dfc7d2d594a9a94c9b988f5cc726200, type: 2}
   response:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6812960665113685243}
-        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: playMentalUp
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   responseForSentString:
     m_PersistentCalls:
       m_Calls: []
@@ -823,7 +811,19 @@ MonoBehaviour:
       m_Calls: []
   responseForSentBool:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6812960665113685243}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: playMentalUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6812960665536175730
 GameObject:
   m_ObjectHideFlags: 0

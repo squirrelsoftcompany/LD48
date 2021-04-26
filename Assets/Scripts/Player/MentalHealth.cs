@@ -80,7 +80,6 @@ namespace Player {
         public void gainHealth(float amount) {
             Assert.IsTrue(amount > 0);
             Health += amount;
-            mentalGainEvent.Raise();
         }
 
         public void goingOutOfBounds(bool isOutside) {
@@ -116,6 +115,16 @@ namespace Player {
 
         private void doSomethingCrazy() {
             crazyEvent.Raise();
+        }
+
+        public void endGainHealth() {
+            mentalGainEvent.sentBool = false;
+            mentalGainEvent.Raise();
+        }
+
+        public void startGainHealth() {
+            mentalGainEvent.sentBool = true;
+            mentalGainEvent.Raise();
         }
     }
 }
