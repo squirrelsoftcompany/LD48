@@ -11,6 +11,8 @@ public class PostProcessMentalHealth : MonoBehaviour
     [SerializeField] private GameEvent mentalHealthEvent;
     [SerializeField] private PlayerData playerData;
     public VolumeProfile mVPMentalHealth;
+    public float mGammaDistorionShift = 40;
+    public float mLensShift = 0.3f;
     private float mCurrentTimerValue = 0.0f;
     private bool mShiftUp= true;
     private float mMaxTimerValue = 2.0f;
@@ -40,22 +42,20 @@ public class PostProcessMentalHealth : MonoBehaviour
 
         LiftGammaGain lLiftGammaGain;
         LensDistortion lLensDistortion;
+        float lMentalHealth = mentalHealthEvent.sentFloat / playerData.maxHealth;
 
         if (mVPMentalHealth.TryGet(out lLiftGammaGain))
         {
-            float lMentalHealth = mentalHealthEvent.sentFloat / playerData.maxHealth;
-            float lGammaShift = ((lShift* 2.0f - 1.0f) * 0.2f) * (1.0f - lMentalHealth);
-            // Change intensity between -0.2f and 0.2f 
-            lGammaShift = Mathf.Clamp(lGammaShift, -0.2f, 0.2f);
+            // Change intensity between -0.2f and 0.2f
+            float lGammaShift = ((lShift * mLensShift - 1.0f) * mLensShift) * (1.0f - lMentalHealth);
+            lGammaShift = Mathf.Clamp(lGammaShift, -mLensShift, mLensShift);
             lLiftGammaGain.gamma.value = new Vector4(1.0f, 1.0f, 1.0f, lGammaShift);
         }
         if (mVPMentalHealth.TryGet(out lLensDistortion))
-        {
-            float lMentalHealth = mentalHealthEvent.sentFloat / playerData.maxHealth;
-            // Change intensity between -60 and +60 
-            float lIntensityShift = (lShift* 2.0f * 60.0f - 60.0f) * (1.0f - lMentalHealth);
+        { // Change intensity between -60 and +60 
+            float lIntensityShift = (lShift* 2.0f * mGammaDistorionShift - mGammaDistorionShift) * (1.0f - lMentalHealth);
             lIntensityShift = lIntensityShift / 100.0f; // URP PP use [-1;1] range
-            lIntensityShift = Mathf.Clamp(lIntensityShift, -60.0f, 60.0f);
+            lIntensityShift = Mathf.Clamp(lIntensityShift, -mGammaDistorionShift, mGammaDistorionShift);
             lLensDistortion.intensity.value = lIntensityShift;
         }
     }
