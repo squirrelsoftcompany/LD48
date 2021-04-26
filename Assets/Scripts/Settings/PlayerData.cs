@@ -9,5 +9,6 @@ namespace Settings {
         public float angularVelocity;
         public float maxVelocity;
         public float minChangeDepth = 0.5f;
+        public float ratioSpeedMentalHealth;
     }
 }
