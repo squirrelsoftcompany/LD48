@@ -160,6 +160,16 @@ public class AvoidEditor : EditorWindow
     {
         Vector3 origin = size / 2;
         GameObject wallBottom = InstantiateAvoidWall(origin, parent, new Vector2(steps.x, steps.z), new Vector2(size.x, size.z), size.y / 2, "Bottom");
+
+        // apply height
+        Vector3 lTerrainPosition = m_terrain.GetPosition();
+        foreach (Transform avoid in wallBottom.transform)
+        {
+            float h = m_terrain.SampleHeight(avoid.position);
+            avoid.position += Vector3.up * h;
+            Vector3 N = m_terrain.terrainData.GetInterpolatedNormal((avoid.localPosition.x + origin.x) / size.x, (avoid.localPosition.y + origin.y) / size.y);
+            avoid.LookAt(avoid.position + N);
+        }
     }
 
     void InstantiateBounds(Transform parent, Vector3 steps, Vector3 size)
@@ -220,6 +230,7 @@ public class AvoidEditor : EditorWindow
     {
         GameObject go = PrefabUtility.InstantiatePrefab(prefab, parent) as GameObject;
         go.transform.localPosition = localPosition;
+        go.transform.LookAt(parent);
         return go;
     }
 }
