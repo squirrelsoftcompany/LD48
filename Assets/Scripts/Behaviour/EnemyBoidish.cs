@@ -77,22 +77,17 @@ namespace Behaviour
                 {
                     Vector3 difference = data.position - selfData.position;
                     Vector3 direction = difference.normalized;
-                    float distance = Mathf.Abs(difference.magnitude);
+                    float distance = difference.magnitude;
 
                     float w = settings.GetWeight(distance);
                     Vector3 finalDirection = direction;
                     if (settings.m_avoid) // avoid
                     {
-                        Vector3 inter = RaySphereIntersection(transform.position, direction, data.position, settings.m_avoidanceRadius);
-
-                        Vector3 N = (inter - data.position).normalized;
-                        Vector3 D = (inter - selfData.position).normalized;
-
-                        float cosTheta = Vector3.Dot(transform.forward, D);
-                        if (cosTheta < 0) // inter is behind this
-                            finalDirection = -D;
+                        float cosTheta = Vector3.Dot(selfData.forward, direction);
+                        if (cosTheta < 0) // other boid is behind this
+                            finalDirection = Vector3.Reflect(direction, -data.forward);
                         else
-                            finalDirection = Vector3.Reflect(D, N);
+                            finalDirection = Vector3.Reflect(direction, data.forward);
                     }
 
                     directionSum += finalDirection * w;
