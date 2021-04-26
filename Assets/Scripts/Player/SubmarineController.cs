@@ -13,6 +13,7 @@ namespace Player {
         [SerializeField] private GameEvent echolocationEvent;
         [SerializeField] private GameEvent depthEvent;
         [SerializeField] private GameEvent bumpEvent;
+        [SerializeField] private GameEvent outOfBoundsEvent;
         [SerializeField] private GameEvent accelerationEvent;
         [SerializeField] private Transform referenceZeroDepth;
         [SerializeField] private Transform referenceMaxDepth;
@@ -42,8 +43,23 @@ namespace Player {
             controls?.Disable();
         }
 
-        private void OnCollisionEnter() {
-            bumpEvent.Raise();
+        private void OnCollisionEnter(Collider target) {
+            if (target.tag != "Bounds") { 
+                bumpEvent.Raise(); 
+            } 
+        }
+
+        private void OnTriggerEnter(Collider target) {
+            if (target.tag == "Bounds") {
+                outOfBoundsEvent.sentBool = true;
+                outOfBoundsEvent.Raise();
+            }
+        }
+        private void OnTriggerExit(Collider target) {
+            if (target.tag == "Bounds"){
+                outOfBoundsEvent.sentBool = false;
+                outOfBoundsEvent.Raise();
+            }
         }
 
         private void OnValidate() {
