@@ -46,13 +46,13 @@ public class PostProcessMentalHealth : MonoBehaviour
 
         if (mVPMentalHealth.TryGet(out lLiftGammaGain))
         {
-            // Change intensity between -0.2f and 0.2f
+            // Change intensity between -mLensShift and mLensShift
             float lGammaShift = ((lShift * mLensShift - 1.0f) * mLensShift) * (1.0f - lMentalHealth);
             lGammaShift = Mathf.Clamp(lGammaShift, -mLensShift, mLensShift);
             lLiftGammaGain.gamma.value = new Vector4(1.0f, 1.0f, 1.0f, lGammaShift);
         }
         if (mVPMentalHealth.TryGet(out lLensDistortion))
-        { // Change intensity between -60 and +60 
+        { // Change intensity between -mGammaDistorionShift and +mGammaDistorionShift
             float lIntensityShift = (lShift* 2.0f * mGammaDistorionShift - mGammaDistorionShift) * (1.0f - lMentalHealth);
             lIntensityShift = lIntensityShift / 100.0f; // URP PP use [-1;1] range
             lIntensityShift = Mathf.Clamp(lIntensityShift, -mGammaDistorionShift, mGammaDistorionShift);
