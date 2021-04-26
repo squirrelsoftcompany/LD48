@@ -7,6 +7,7 @@ namespace UI {
         [SerializeField] private Sprite playImage, pauseImage;
         [SerializeField] private GameObject winScreen, loseScreen, pauseScreen, startScreen;
         private bool isRunning;
+        [SerializeField] private GameObject controls;
 
         private void Start() {
             isRunning = false;
@@ -49,6 +50,10 @@ namespace UI {
 
         public void win() {
             winScreen.SetActive(true);
+        }
+
+        public void displayControls() {
+            controls.SetActive(true);
         }
     }
 }
