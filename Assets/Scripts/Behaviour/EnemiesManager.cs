@@ -15,6 +15,7 @@ namespace Behaviour
             [TagSelector] public string m_tag;
             public bool m_activated = true;
             public bool m_avoid = false;
+            public bool m_backCulling = false;
             public float m_maxWeight;
             public float m_relevantRadius;
             public float m_avoidanceRadius;
@@ -67,6 +68,16 @@ namespace Behaviour
                 relevants[settings] = datum.FindAll(
                     x => settings.m_relevantRadius == Mathf.Infinity ||
                             Vector3.Distance(x.position, self.position) < pair.Key.m_relevantRadius);
+                if (settings.m_backCulling)
+                {
+                    // Back Culling
+                    relevants[settings] = relevants[settings].FindAll(x =>
+                        {
+                            Vector3 selfToX = x.position - self.position;
+                            return Vector3.Dot(self.forward, selfToX) > 0
+                                && Vector3.Dot(x.forward, -selfToX) > 0;
+                        });
+                }
             }
             return relevants;
         }
