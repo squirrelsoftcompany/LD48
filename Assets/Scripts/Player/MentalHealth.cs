@@ -3,17 +3,24 @@ using System.Collections;
 using Settings;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 namespace Player {
     public class MentalHealth : MonoBehaviour {
         private float health;
         [SerializeField] private float tickLoseInterval = 1;
 
-        // loseHealth = ax + b, with x corresponding to depth
-        [SerializeField] private float loseCoefficientA;
+        [SerializeField] [Tooltip("When at minimum depth, that is the health by second that we lose")] [Range(0, 10)]
+        private float minLoseZeroDepth;
+
+        [SerializeField] [Tooltip("When at maximum depth, that is the health by second that we lose")] [Range(0, 10)]
+        private float maxLoseMaxDepth;
 
         // loseHealth = ax + b, with x corresponding to depth
-        [SerializeField] private float loseCoefficientB;
+        private float loseCoefficientA;
+
+        // loseHealth = ax + b, with x corresponding to depth
+        private float loseCoefficientB;
 
         // in seconds, what interval we want for health=0 (minCrazyStuffInterval) and health=0.8*max
         // (= maxCrazyStuffInterval)
@@ -63,6 +70,8 @@ namespace Player {
             _isOutside = false;
             crazyStuffIntervalB = minCrazyStuffInterval;
             crazyStuffIntervalA = (maxCrazyStuffInterval - minCrazyStuffInterval) / thresholdCrazy;
+            loseCoefficientB = minLoseZeroDepth;
+            loseCoefficientA = maxLoseMaxDepth - minLoseZeroDepth; // / 1, because 1 is full depth 
             _lastTimeCrazyStuff = 0;
             Health = playerData.maxHealth;
             StartCoroutine(CountDown());
@@ -99,7 +108,7 @@ namespace Player {
             var interval = Time.time - _lastTimeCrazyStuff;
             if (interval < crazyStuffIntervalA * ratioHealth + crazyStuffIntervalB) return;
             // Enough time has passed since we did something crazy 
-            if (UnityEngine.Random.value < percentChanceCrazy) return;
+            if (Random.value < percentChanceCrazy) return;
             // do crazy stuff
             _lastTimeCrazyStuff = Time.time;
             doSomethingCrazy();

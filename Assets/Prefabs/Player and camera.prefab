@@ -563,8 +563,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tickLoseInterval: 1
-  loseCoefficientA: 4.5
-  loseCoefficientB: 0.5
+  minLoseZeroDepth: 0.5
+  maxLoseMaxDepth: 5
   minCrazyStuffInterval: 10
   maxCrazyStuffInterval: 180
   outOfBoundsMultiplier: 2.2
