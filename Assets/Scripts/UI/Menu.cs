@@ -18,6 +18,7 @@ namespace UI {
             isRunning = true;
             startScreen.SetActive(false);
             Time.timeScale = 1f;
+            image.enabled = true;
         }
 
         public void togglePlayPause() {
