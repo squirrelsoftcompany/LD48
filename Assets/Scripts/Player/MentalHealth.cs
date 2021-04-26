@@ -15,11 +15,15 @@ namespace Player {
         // loseHealth = ax + b, with x corresponding to depth
         [SerializeField] private float loseCoefficientB;
 
-        // crazyStuffInterval = ax + b, with x corresponding to mental health (-> in seconds)
-        [SerializeField] private float crazyStuffIntervalA;
+        // in seconds, what interval we want for health=0 (minCrazyStuffInterval) and health=0.8*max
+        // (= maxCrazyStuffInterval)
+        [SerializeField] private float minCrazyStuffInterval, maxCrazyStuffInterval;
 
         // crazyStuffInterval = ax + b, with x corresponding to mental health (-> in seconds)
-        [SerializeField] private float crazyStuffIntervalB;
+        private float crazyStuffIntervalA;
+
+        // crazyStuffInterval = ax + b, with x corresponding to mental health (-> in seconds)
+        private float crazyStuffIntervalB;
 
         // If we are in the interval when the crazy stuff happen, we have a possibility that the crazy stuff happen:
         [SerializeField] private float percentChanceCrazy = 0.80f;
@@ -45,6 +49,8 @@ namespace Player {
 
         // Start is called before the first frame update
         private void Start() {
+            crazyStuffIntervalB = minCrazyStuffInterval;
+            crazyStuffIntervalA = (maxCrazyStuffInterval - minCrazyStuffInterval) / thresholdCrazy;
             _lastTimeCrazyStuff = 0;
             Health = playerData.maxHealth;
             StartCoroutine(CountDown());
