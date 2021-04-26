@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 3962832340399492319}
   - component: {fileID: 795518733990320358}
   - component: {fileID: 8639871519897405785}
+  - component: {fileID: 4455895946166061384}
   m_Layer: 0
   m_Name: Submarine Player
   m_TagString: Player
@@ -566,6 +567,7 @@ MonoBehaviour:
   loseCoefficientB: 0.5
   minCrazyStuffInterval: 10
   maxCrazyStuffInterval: 180
+  outOfBoundsMultiplier: 2.2
   percentChanceCrazy: 0.8
   thresholdCrazy: 0.8
   mentalHealthEvent: {fileID: 11400000, guid: 8b9b35a685c333b4783a682cc539c0af, type: 2}
@@ -664,6 +666,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loseEvent: {fileID: 11400000, guid: d012caa48f8049d409b0925b3196f124, type: 2}
+--- !u!114 &4455895946166061384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4010951998426490702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa39e69ee488484439cd909f5f2a3254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: c71b4b3394bc98d4690688719c3cccbe, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentString:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentInt:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentFloat:
+    m_PersistentCalls:
+      m_Calls: []
+  responseForSentBool:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2478747234006660289}
+        m_TargetAssemblyTypeName: Player.MentalHealth, Assembly-CSharp
+        m_MethodName: goingOutOfBounds
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4031623628816356652
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,13 +17,24 @@ namespace Player {
 
         // in seconds, what interval we want for health=0 (minCrazyStuffInterval) and health=0.8*max
         // (= maxCrazyStuffInterval)
-        [SerializeField] private float minCrazyStuffInterval, maxCrazyStuffInterval;
+        [Tooltip(
+            "Min interval for crazy stuff when we are at min mental health (for example: 5 for 'every 5 seconds')")]
+        [SerializeField]
+        private float minCrazyStuffInterval;
+
+        [Tooltip(
+            "Max interval for crazy stuff when we are at the threshold mental health (for example: 50 for 'every 50 seconds')")]
+        [SerializeField]
+        private float maxCrazyStuffInterval;
+
+        [SerializeField] [Range(1, 10)] private float outOfBoundsMultiplier;
 
         // crazyStuffInterval = ax + b, with x corresponding to mental health (-> in seconds)
         private float crazyStuffIntervalA;
 
         // crazyStuffInterval = ax + b, with x corresponding to mental health (-> in seconds)
         private float crazyStuffIntervalB;
+        private bool _isOutside;
 
         // If we are in the interval when the crazy stuff happen, we have a possibility that the crazy stuff happen:
         [SerializeField] private float percentChanceCrazy = 0.80f;
@@ -49,6 +60,7 @@ namespace Player {
 
         // Start is called before the first frame update
         private void Start() {
+            _isOutside = false;
             crazyStuffIntervalB = minCrazyStuffInterval;
             crazyStuffIntervalA = (maxCrazyStuffInterval - minCrazyStuffInterval) / thresholdCrazy;
             _lastTimeCrazyStuff = 0;
@@ -62,11 +74,18 @@ namespace Player {
             mentalGainEvent.Raise();
         }
 
+        public void goingOutOfBounds(bool isOutside) {
+            _isOutside = isOutside;
+        }
+
         private IEnumerator CountDown() {
             while (Health > 0) {
                 yield return new WaitForSeconds(tickLoseInterval);
                 var depthPercent = depthEvent.sentFloat / playerData.maxDepth;
-                Health -= loseCoefficientA * depthPercent + loseCoefficientB;
+                Health -= (loseCoefficientA * depthPercent + loseCoefficientB) *
+                          (_isOutside
+                              ? outOfBoundsMultiplier
+                              : 1); // if we are outside of game bounds, lose more rapidly
             }
 
             mentalHealthEvent.sentFloat = 0;
