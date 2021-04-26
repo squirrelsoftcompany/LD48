@@ -6,6 +6,7 @@ namespace UI {
     public class Menu : MonoBehaviour {
         [SerializeField] private Image image;
         [SerializeField] private Sprite playImage, pauseImage;
+        [SerializeField] private GameObject winScreen, loseScreen;
         private bool isRunning;
 
         private void Start() {
@@ -32,7 +33,14 @@ namespace UI {
             image.sprite = pauseImage;
         }
 
-        // Update is called once per frame
-        void Update() { }
+        public void lose() {
+            loseScreen.SetActive(true);
+            Time.timeScale = 0;
+            isRunning = false;
+        }
+
+        public void win() {
+            winScreen.SetActive(true);
+        }
     }
 }
