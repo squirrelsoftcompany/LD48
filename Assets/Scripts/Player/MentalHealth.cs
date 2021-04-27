@@ -65,7 +65,7 @@ namespace Player {
         private float Health {
             get => health;
             set {
-                health = Math.Max(value, 0);
+                health = Mathf.Clamp(value, 0, playerData.maxHealth);
                 mentalHealthEvent.sentFloat = health;
                 mentalHealthEvent.Raise();
             }
