@@ -106,7 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02afe60194362104ebb290acad4cf640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mPlayer: {fileID: 0}
   maxIntensity: 100000
   minIntensity: 0
   maxDistance: 500
@@ -251,9 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acffe38741ab33a4ea8e222521768b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonusAmount: 10
-  coolDownSeconds: 20
-  bonusLight: {fileID: 8293562731724248628}
+  bonusAmountPerSecond: 2.4
 --- !u!136 &8293562732083081999
 CapsuleCollider:
   m_ObjectHideFlags: 0
