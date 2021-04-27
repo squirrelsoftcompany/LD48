@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using JetBrains.Annotations;
 using Settings;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -56,6 +57,11 @@ namespace Player {
         [SerializeField] private PlayerData playerData;
         [SerializeField] private GameEvent mentalGainEvent;
 
+        [CanBeNull] private IEnumerator gainCoroutine;
+        private float _gainPerSecond;
+        private float _currentLoseAmount;
+        private bool inBonusZone;
+
         private float Health {
             get => health;
             set {
@@ -68,6 +74,7 @@ namespace Player {
         // Start is called before the first frame update
         private void Start() {
             _isOutside = false;
+            inBonusZone = false;
             crazyStuffIntervalB = minCrazyStuffInterval;
             crazyStuffIntervalA = (maxCrazyStuffInterval - minCrazyStuffInterval) / thresholdCrazy;
             loseCoefficientB = minLoseZeroDepth;
@@ -87,20 +94,31 @@ namespace Player {
         }
 
         private IEnumerator CountDown() {
-            while (Health > 0) {
-                yield return new WaitForSeconds(tickLoseInterval);
-                var depthPercent = depthEvent.sentFloat / playerData.maxDepth;
-                Health -= (loseCoefficientA * depthPercent + loseCoefficientB) *
-                          (_isOutside
-                              ? outOfBoundsMultiplier
-                              : 1); // if we are outside of game bounds, lose more rapidly
-            }
+            yield return new WaitForSeconds(tickLoseInterval);
+        }
 
-            mentalHealthEvent.sentFloat = 0;
-            mentalHealthEvent.Raise();
+        private float _lastTimeTick = 0;
+
+        private void loseHealth() {
+            var time = Time.time;
+            if (time - _lastTimeTick < tickLoseInterval) return;
+            var depthPercent = depthEvent.sentFloat / playerData.maxDepth;
+            _currentLoseAmount = (loseCoefficientA * depthPercent + loseCoefficientB) *
+                                 (_isOutside
+                                     ? outOfBoundsMultiplier
+                                     : 1); // if we are outside of game bounds, lose more rapidly 
+            Health -= _currentLoseAmount;
+            _lastTimeTick = time;
         }
 
         private void Update() {
+            loseHealth();
+
+            // calculate mental health speed
+            var healthSpeed = mentalHealthSpeed();
+            Debug.Log("health: " + Health);
+            playerData.ratioSpeedMentalHealth = healthSpeed;
+
             var ratioHealth = mentalHealthEvent.sentFloat / playerData.maxHealth;
             if (ratioHealth >= thresholdCrazy) return;
             // we are now crazy enough to do crazy stuff
@@ -113,6 +131,13 @@ namespace Player {
             doSomethingCrazy();
         }
 
+        private float mentalHealthSpeed() {
+            var res = (_gainPerSecond - _currentLoseAmount / tickLoseInterval) / playerData.maxHealth;
+            Debug.Log("Now health speed= " + res + "\ngain = " + _gainPerSecond + "/s\nLose: " + _currentLoseAmount +
+                      " in " + tickLoseInterval + " s\nMax health: " + playerData.maxHealth);
+            return res;
+        }
+
         private void doSomethingCrazy() {
             crazyEvent.Raise();
         }
@@ -120,11 +145,32 @@ namespace Player {
         public void endGainHealth() {
             mentalGainEvent.sentBool = false;
             mentalGainEvent.Raise();
+            inBonusZone = false;
+            if (gainCoroutine == null) return;
+            StopCoroutine(gainCoroutine);
+            _gainPerSecond = 0;
+            gainCoroutine = null;
         }
 
-        public void startGainHealth() {
+
+        public void startGainHealth(float amountPerSecond) {
             mentalGainEvent.sentBool = true;
             mentalGainEvent.Raise();
+            inBonusZone = true;
+            if (gainCoroutine != null) {
+                StopCoroutine(gainCoroutine);
+            }
+
+            _gainPerSecond = amountPerSecond;
+            gainCoroutine = gainHealthPerSecond(amountPerSecond);
+            StartCoroutine(gainCoroutine);
+        }
+
+        private IEnumerator gainHealthPerSecond(float amount) {
+            while (inBonusZone) {
+                Health += amount * Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }
         }
     }
 }

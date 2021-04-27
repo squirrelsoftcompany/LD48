@@ -9,13 +9,7 @@ namespace Props {
         private void OnTriggerEnter(Collider other) {
             var otherHealth = other.GetComponent<MentalHealth>();
             if (otherHealth == null) return;
-            otherHealth.startGainHealth();
-        }
-
-        private void OnTriggerStay(Collider other) {
-            var otherHealth = other.GetComponent<MentalHealth>();
-            if (otherHealth == null) return;
-            otherHealth.gainHealth(bonusAmountPerSecond * Time.fixedDeltaTime);
+            otherHealth.startGainHealth(bonusAmountPerSecond);
         }
 
         private void OnTriggerExit(Collider other) {
