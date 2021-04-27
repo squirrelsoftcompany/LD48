@@ -1,10 +1,7 @@
-using System;
 using System.Collections;
 using JetBrains.Annotations;
 using Settings;
 using UnityEngine;
-using UnityEngine.Assertions;
-using Random = UnityEngine.Random;
 
 namespace Player {
     public class MentalHealth : MonoBehaviour {
@@ -61,6 +58,7 @@ namespace Player {
         private float _gainPerSecond;
         private float _currentLoseAmount;
         private bool inBonusZone;
+        private float _lastTimeTick;
 
         private float Health {
             get => health;
@@ -81,23 +79,11 @@ namespace Player {
             loseCoefficientA = maxLoseMaxDepth - minLoseZeroDepth; // / 1, because 1 is full depth 
             _lastTimeCrazyStuff = 0;
             Health = playerData.maxHealth;
-            StartCoroutine(CountDown());
-        }
-
-        public void gainHealth(float amount) {
-            Assert.IsTrue(amount > 0);
-            Health += amount;
         }
 
         public void goingOutOfBounds(bool isOutside) {
             _isOutside = isOutside;
         }
-
-        private IEnumerator CountDown() {
-            yield return new WaitForSeconds(tickLoseInterval);
-        }
-
-        private float _lastTimeTick = 0;
 
         private void loseHealth() {
             var time = Time.time;
@@ -116,7 +102,6 @@ namespace Player {
 
             // calculate mental health speed
             var healthSpeed = mentalHealthSpeed();
-            Debug.Log("health: " + Health);
             playerData.ratioSpeedMentalHealth = healthSpeed;
 
             var ratioHealth = mentalHealthEvent.sentFloat / playerData.maxHealth;
@@ -132,10 +117,7 @@ namespace Player {
         }
 
         private float mentalHealthSpeed() {
-            var res = (_gainPerSecond - _currentLoseAmount / tickLoseInterval) / playerData.maxHealth;
-            Debug.Log("Now health speed= " + res + "\ngain = " + _gainPerSecond + "/s\nLose: " + _currentLoseAmount +
-                      " in " + tickLoseInterval + " s\nMax health: " + playerData.maxHealth);
-            return res;
+            return (_gainPerSecond - _currentLoseAmount / tickLoseInterval) / playerData.maxHealth;
         }
 
         private void doSomethingCrazy() {
