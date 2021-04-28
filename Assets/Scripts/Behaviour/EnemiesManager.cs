@@ -47,19 +47,6 @@ namespace Behaviour
         public static List<BoidSettings> BoidsSettings => _inst?.m_boidSettings;
         public BoidSettings this[string tag] => m_boidSettings?.Find(d => d.m_tag == tag);
 
-        public List<GameObject> RelevantGOs(GameObject go)
-        {
-            List<GameObject> relevants = new List<GameObject>();
-            foreach (var pair in _taggedGOs)
-            {
-                //  Get inside range
-                relevants.AddRange(pair.Value.FindAll(
-                    x => pair.Key.m_relevantRadius == Mathf.Infinity ||
-                            Vector3.Distance(x.transform.position, go.transform.position) < pair.Key.m_relevantRadius));                
-            }
-            return relevants;
-        }
-
         public Dictionary<BoidSettings, List<BoidData>> RelevantBoidData(BoidData self)
         {
             Dictionary<BoidSettings, List<BoidData>> relevants = new Dictionary<BoidSettings, List<BoidData>>();
