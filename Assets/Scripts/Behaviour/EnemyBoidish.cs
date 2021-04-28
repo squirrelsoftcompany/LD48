@@ -113,29 +113,6 @@ namespace Behaviour
             _rigidbody.AddForce(transform.forward * forwardVelocity);
         }
 
-        Vector3 RaySphereIntersection(
-            Vector3 rayPos, Vector3 rayDir,
-            Vector3 spherePos, float sphereRadius)
-        {
-            Vector3 o_minus_c = rayPos - spherePos;
-
-            float p = Vector3.Dot(rayDir, o_minus_c);
-            float q = Vector3.Dot(o_minus_c, o_minus_c) - (sphereRadius * sphereRadius);
-
-            float discriminant = (p * p) - q;
-            if (discriminant< 0.0f)
-            {
-                return Vector3.positiveInfinity;
-            }
-
-            float dRoot = Mathf.Sqrt(discriminant);
-            float dist1 = -p - dRoot;
-            float dist2 = -p + dRoot;
-
-            float initialD = (discriminant > Mathf.Epsilon) ? Mathf.Min(dist1, dist2) : dist2;
-            return Vector3.Lerp(rayPos, spherePos, initialD / Vector3.Distance(rayPos, spherePos));
-        }
-
 #if UNITY_EDITOR
         // GIZMOS
         private struct GizmoData { public Vector3 m_position; public Vector3 m_direction; public float m_weight; }
