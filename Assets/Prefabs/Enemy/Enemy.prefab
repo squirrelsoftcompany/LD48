@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 415e36a7d9c9f4646a65be626c1c4ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_forwardVelocity: 30
-  m_angularVelocity: 30
+  m_forwardVelocity: 40
+  m_angularVelocity: 20
   m_deepGizmos: 1
 --- !u!54 &2599070872626137644
 Rigidbody:
