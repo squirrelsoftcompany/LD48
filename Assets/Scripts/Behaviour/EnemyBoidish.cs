@@ -18,27 +18,53 @@ namespace Behaviour
 
         private Vector3 _wantedDirection;
         private Rigidbody _rigidbody;
+        private EnemiesManager.BoidSettings _selfSettings;
+        private EnemiesManager.BoidData _selfData;
 
         // Start is called before the first frame update
         void Start()
         {
             _wantedDirection = transform.forward;
             _rigidbody = GetComponent<Rigidbody>();
+            _selfSettings = EnemiesManager.Get[tag];
+            _selfData = new EnemiesManager.BoidData() { position = gameObject.transform.position, forward = gameObject.transform.forward };
 
 #if UNITY_EDITOR
             // GIZMOS
             _gizmoDatum = new List<GizmoData>();
 #endif // UNITY_EDITOR
-        }
 
-        // Update is called once per frame
-        void Update()
-        {
+            EnemiesManager.Get.AddAgent(this);
         }
 
         private void FixedUpdate()
         {
-            Profiler.BeginSample("EnemyBoidish_FixedUpdate");
+            // Apply
+            float lRadAngularVelocity = m_angularVelocity * Mathf.Deg2Rad;
+            float lCosTheta = Vector3.Dot(_selfData.forward, _wantedDirection);
+            _rigidbody.maxAngularVelocity = lRadAngularVelocity;
+
+            // compute rotation function based on current and wanted direction and angular velocity
+            if (lCosTheta < 1 - Mathf.Epsilon)
+            {
+                // get axis and angle
+                Vector3 rotationAxis = Vector3.Cross(_selfData.forward, _wantedDirection);
+                float theta = Mathf.Asin(rotationAxis.magnitude);
+                Vector3 w = rotationAxis.normalized * Mathf.Min(theta, lRadAngularVelocity) / Time.fixedDeltaTime;
+
+                // compute tensor
+                Quaternion q = transform.rotation * _rigidbody.inertiaTensorRotation;
+                Vector3 tensor = q * Vector3.Scale(_rigidbody.inertiaTensor, (Quaternion.Inverse(q) * w));
+                _rigidbody.AddTorque(tensor, ForceMode.Impulse);
+            }
+            // decrease velocity when there is huge rotation to do
+            float forwardVelocity = Mathf.Lerp(m_forwardVelocity/ 2, m_forwardVelocity, lCosTheta);
+            _rigidbody.AddForce(transform.forward * forwardVelocity);
+        }
+
+        public void UpdateWantedDirection()
+        {
+            Profiler.BeginSample("EnemyBoidish_UpdateWantedDirection");
 
 #if UNITY_EDITOR
             // GIZMOS
@@ -48,15 +74,14 @@ namespace Behaviour
             }
 #endif // UNITY_EDITOR
 
-            // Init variable
-            EnemiesManager.BoidSettings selfSettings = EnemiesManager.Get[tag];
-            EnemiesManager.BoidData selfData = new EnemiesManager.BoidData(){ position = gameObject.transform.position, forward = gameObject.transform.forward };
+            _selfData.position = gameObject.transform.position;
+            _selfData.forward = gameObject.transform.forward;
 
-            // Take in count current direction
-            Vector3 directionSum = selfData.forward * selfSettings.GetWeight(0);
+            // Take in count current direction for a weight of one
+            Vector3 directionSum = _selfData.forward;
 
             // Take in count relevants
-            var relevants = EnemiesManager.Get.RelevantBoidData(selfData);
+            var relevants = EnemiesManager.Get.RelevantBoidData(_selfData);
             foreach (var pair in relevants)
             {
                 var settings = pair.Key;
@@ -64,11 +89,12 @@ namespace Behaviour
 
                 foreach (var data in datum)
                 {
-                    Vector3 difference = data.position - selfData.position;
+                    Vector3 difference = data.position - _selfData.position;
+                    Vector3 direction = difference.normalized;
                     float distance = difference.magnitude;
 
                     float w = settings.GetWeight(distance);
-                    Vector3 forward = settings.m_avoid ? -data.forward : data.forward;
+                    Vector3 forward = settings.m_avoid ? -direction : direction;
 
                     directionSum += forward * w;
 
@@ -83,12 +109,12 @@ namespace Behaviour
             }
 
             // Take in count avoid data
-            var relevantAvoidDatum = EnemiesManager.Get.RelevantAvoidData(selfData);
+            var relevantAvoidDatum = EnemiesManager.Get.RelevantAvoidData(_selfData);
             var avoidSettings = EnemiesManager.Get.m_avoidSettings;
 
             foreach (var avoidData in relevantAvoidDatum)
             {
-                Vector3 difference = avoidData.position - selfData.position;
+                Vector3 difference = avoidData.position - _selfData.position;
                 Vector3 directionToAvoid = difference.normalized;
                 float distance = difference.magnitude;
 
@@ -96,7 +122,7 @@ namespace Behaviour
                 Vector3 finalDirection = directionToAvoid;
                 if (avoidSettings.m_avoid) // avoid
                 {
-                    float cosTheta = Vector3.Dot(selfData.forward, directionToAvoid);
+                    float cosTheta = Vector3.Dot(_selfData.forward, directionToAvoid);
                     if (cosTheta < 0) // other boid is behind this
                         finalDirection = Vector3.Reflect(directionToAvoid, -avoidData.forward);
                     else
@@ -118,28 +144,6 @@ namespace Behaviour
             _wantedDirection = directionSum.normalized;
 
             Profiler.EndSample();
-
-            // Apply
-            float lRadAngularVelocity = m_angularVelocity * Mathf.Deg2Rad;
-            float lCosTheta = Vector3.Dot(selfData.forward, _wantedDirection);
-            _rigidbody.maxAngularVelocity = lRadAngularVelocity;
-
-            // compute rotation function based on current and wanted direction and angular velocity
-            if (lCosTheta < 1 - Mathf.Epsilon)
-            {
-                // get axis and angle
-                Vector3 rotationAxis = Vector3.Cross(selfData.forward, _wantedDirection);
-                float theta = Mathf.Asin(rotationAxis.magnitude);
-                Vector3 w = rotationAxis.normalized * Mathf.Min(theta, lRadAngularVelocity) / Time.fixedDeltaTime;
-
-                // compute tensor
-                Quaternion q = transform.rotation * _rigidbody.inertiaTensorRotation;
-                Vector3 tensor = q * Vector3.Scale(_rigidbody.inertiaTensor, (Quaternion.Inverse(q) * w));
-                _rigidbody.AddTorque(tensor, ForceMode.Impulse);
-            }
-            // decrease velocity when there is huge rotation to do
-            float forwardVelocity = Mathf.Lerp(m_forwardVelocity/ 2, m_forwardVelocity, lCosTheta);
-            _rigidbody.AddForce(transform.forward * forwardVelocity);
         }
 
 #if UNITY_EDITOR
