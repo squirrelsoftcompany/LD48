@@ -31,6 +31,7 @@ namespace Behaviour
             }
         }
 
+        [System.Serializable]
         public struct BoidData
         {
             public Vector3 position;
@@ -38,9 +39,11 @@ namespace Behaviour
         }
 
         public List<BoidSettings> m_boidSettings;
+        public BoidSettings m_avoidSettings;
 
         Dictionary<BoidSettings, List<GameObject>> _taggedGOs;
         Dictionary<BoidSettings, List<BoidData>> _boidDatum;
+        List<BoidData> _avoidDatum;
 
         static EnemiesManager _inst;
         public static EnemiesManager Get => _inst;
@@ -54,25 +57,37 @@ namespace Behaviour
             {
                 BoidSettings settings = pair.Key;
                 List<BoidData> datum = pair.Value;
+                relevants[settings] = RelevantBoidData(self, settings, datum);
+            }
+            return relevants;
+        }
 
-                // Get those inside range
-                relevants[settings] = datum.FindAll(x =>
-                    {
-                        float d = Vector3.Distance(x.position, self.position); // d can't be negative
-                        // if x not at self.position and weight at this distance is not null
-                        return d > 0 && settings.GetWeight(d) != 0;
-                    });
+        public List<BoidData> RelevantAvoidData(BoidData self)
+        {
+            return RelevantBoidData(self, m_avoidSettings, _avoidDatum);
+        }
 
-                if (settings.m_myBackCulling || settings.m_itsBackCulling)
+        private List<BoidData> RelevantBoidData(BoidData self, BoidSettings settings, List<BoidData> boidDatum)
+        {
+            List<BoidData> relevants = new List<BoidData>();
+
+            // Get those inside range
+            relevants = boidDatum.FindAll(x =>
+            {
+                float d = Vector3.Distance(x.position, self.position); // d can't be negative
+                // if x not at self.position and weight at this distance is not null
+                return d > 0 && settings.GetWeight(d) != 0;
+            });
+
+            if (settings.m_myBackCulling || settings.m_itsBackCulling)
+            {
+                // Back Culling
+                relevants = relevants.FindAll(x =>
                 {
-                    // Back Culling
-                    relevants[settings] = relevants[settings].FindAll(x =>
-                        {
-                            Vector3 selfToX = x.position - self.position;
-                            return (! settings.m_myBackCulling || Vector3.Dot(self.forward, selfToX) > 0) // cull if x is in self's back
-                                && (! settings.m_itsBackCulling || Vector3.Dot(x.forward, -selfToX) > 0); // cull if self is in x's back
-                        });
-                }
+                    Vector3 selfToX = x.position - self.position;
+                    return (!settings.m_myBackCulling || Vector3.Dot(self.forward, selfToX) > 0) // cull if x is in self's back
+                        && (!settings.m_itsBackCulling || Vector3.Dot(x.forward, -selfToX) > 0); // cull if self is in x's back
+                });
             }
             return relevants;
         }
@@ -88,6 +103,18 @@ namespace Behaviour
             foreach (var data in m_boidSettings)
             {
                 _taggedGOs[data] = GameObject.FindGameObjectsWithTag(data.m_tag).ToList();
+            }
+
+            // init _avoidDatum
+            _avoidDatum = new List<BoidData>();
+            GameObject[] avoidsWall = GameObject.FindGameObjectsWithTag(m_avoidSettings.m_tag);
+            foreach(var wall in avoidsWall)
+            {
+                var avoids = wall.GetComponent<AvoidList>();
+                if (avoids)
+                {
+                    _avoidDatum.AddRange(avoids.m_avoidDatum);
+                }
             }
 
             // init _boidDatum

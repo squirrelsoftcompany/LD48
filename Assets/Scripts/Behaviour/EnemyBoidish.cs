@@ -48,11 +48,15 @@ namespace Behaviour
             }
 #endif // UNITY_EDITOR
 
-            Vector3 directionSum = Vector3.zero;
+            // Init variable
+            EnemiesManager.BoidSettings selfSettings = EnemiesManager.Get[tag];
             EnemiesManager.BoidData selfData = new EnemiesManager.BoidData(){ position = gameObject.transform.position, forward = gameObject.transform.forward };
 
-            var relevants = EnemiesManager.Get.RelevantBoidData(selfData);
+            // Take in count current direction
+            Vector3 directionSum = selfData.forward * selfSettings.GetWeight(0);
 
+            // Take in count relevants
+            var relevants = EnemiesManager.Get.RelevantBoidData(selfData);
             foreach (var pair in relevants)
             {
                 var settings = pair.Key;
@@ -61,31 +65,56 @@ namespace Behaviour
                 foreach (var data in datum)
                 {
                     Vector3 difference = data.position - selfData.position;
-                    Vector3 direction = difference.normalized;
                     float distance = difference.magnitude;
 
                     float w = settings.GetWeight(distance);
-                    Vector3 finalDirection = direction;
-                    if (settings.m_avoid) // avoid
-                    {
-                        float cosTheta = Vector3.Dot(selfData.forward, direction);
-                        if (cosTheta < 0) // other boid is behind this
-                            finalDirection = Vector3.Reflect(direction, -data.forward);
-                        else
-                            finalDirection = Vector3.Reflect(direction, data.forward);
-                    }
+                    Vector3 forward = settings.m_avoid ? -data.forward : data.forward;
 
-                    directionSum += finalDirection * w;
+                    directionSum += forward * w;
 
 #if UNITY_EDITOR
                     // GIZMOS
                     if (m_deepGizmos)
                     {
-                        _gizmoDatum.Add(new GizmoData() { m_position = data.position, m_direction = finalDirection, m_weight = w });
+                        _gizmoDatum.Add(new GizmoData() { m_position = data.position, m_direction = forward, m_weight = w });
                     }
 #endif // UNITY_EDITOR
                 }
             }
+
+            // Take in count avoid data
+            var relevantAvoidDatum = EnemiesManager.Get.RelevantAvoidData(selfData);
+            var avoidSettings = EnemiesManager.Get.m_avoidSettings;
+
+            foreach (var avoidData in relevantAvoidDatum)
+            {
+                Vector3 difference = avoidData.position - selfData.position;
+                Vector3 directionToAvoid = difference.normalized;
+                float distance = difference.magnitude;
+
+                float w = avoidSettings.GetWeight(distance);
+                Vector3 finalDirection = directionToAvoid;
+                if (avoidSettings.m_avoid) // avoid
+                {
+                    float cosTheta = Vector3.Dot(selfData.forward, directionToAvoid);
+                    if (cosTheta < 0) // other boid is behind this
+                        finalDirection = Vector3.Reflect(directionToAvoid, -avoidData.forward);
+                    else
+                        finalDirection = Vector3.Reflect(directionToAvoid, avoidData.forward);
+                }
+
+                directionSum += finalDirection * w;
+
+#if UNITY_EDITOR
+                // GIZMOS
+                if (m_deepGizmos)
+                {
+                    _gizmoDatum.Add(new GizmoData() { m_position = avoidData.position, m_direction = finalDirection, m_weight = w });
+                }
+#endif // UNITY_EDITOR
+            }
+
+            // compute wantedDirection
             _wantedDirection = directionSum.normalized;
 
             Profiler.EndSample();

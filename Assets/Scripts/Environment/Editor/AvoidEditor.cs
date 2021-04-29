@@ -10,6 +10,7 @@ public class AvoidEditor : EditorWindow
     public GameObject m_terrainRoot = null;
     public GameObject m_prefabMapCenter = null;
     public GameObject m_prefabAvoid = null;
+    public GameObject m_prefabAvoidWall = null;
     public Vector3 m_stepsRelief;
     public Vector3 m_stepsBounds;
 
@@ -64,8 +65,8 @@ public class AvoidEditor : EditorWindow
 
             EditorGUILayout.Space(20);
             EditorGUILayout.LabelField("AVOID", mainLabelStyle);
-            PutErrorColor(m_prefabAvoid);
-            m_prefabAvoid = EditorGUILayout.ObjectField("Avoid", m_prefabAvoid, typeof(GameObject), false) as GameObject;
+            PutErrorColor(m_prefabAvoidWall);
+            m_prefabAvoidWall = EditorGUILayout.ObjectField("prefab", m_prefabAvoidWall, typeof(GameObject), false) as GameObject;
             ResetErrorColor();
 
             EditorGUILayout.Space();
@@ -73,10 +74,10 @@ public class AvoidEditor : EditorWindow
             PutErrorColor(m_stepsRelief);
             m_stepsRelief = EditorGUILayout.Vector3Field("Steps", m_stepsRelief);
             ResetErrorColor();
-            GUI.enabled = ValidList(m_terrainComp) && m_prefabAvoid != null && ValidVector(m_stepsRelief);
+            GUI.enabled = ValidList(m_terrainComp) && m_prefabAvoidWall != null && ValidVector(m_stepsRelief);
             if (GUILayout.Button("Generate Avoid Relief"))
             {
-                InstantiateRelief(m_terrainRoot.transform, m_stepsRelief, lTerrainBounds.size, lTerrainBounds.center);
+                InstantiateRelief(m_terrainRoot.transform, m_stepsRelief, lTerrainBounds.center);
             }
             GUI.enabled = true;
 
@@ -125,7 +126,7 @@ public class AvoidEditor : EditorWindow
             }
             EditorGUILayout.EndHorizontal();
 
-            GUI.enabled = ValidList(m_terrainComp) && m_prefabAvoid != null && ValidVector(m_stepsBounds)
+            GUI.enabled = ValidList(m_terrainComp) && m_prefabAvoidWall != null && ValidVector(m_stepsBounds)
                 && (m_top || m_bottom || m_front || m_back || m_right || m_left) == true;
             if (GUILayout.Button("Generate Avoid Bound"))
             {
@@ -170,26 +171,38 @@ public class AvoidEditor : EditorWindow
 
     // INSTANTIATOR
     
-    void InstantiateRelief(Transform parent, Vector3 steps, Vector3 size, Vector3 origin)
+    void InstantiateRelief(Transform parent, Vector3 steps, Vector3 origin)
     {
-        GameObject wallBottom = InstantiateAvoidWall(origin, parent, new Vector2(steps.x, steps.z), new Vector2(size.x, size.z), size.y / 2, "Bottom");
+        // Generate wall
+        GameObject wall = Instantiate(m_prefabAvoidWall, parent);
+        wall.name += "Relief";
+        wall.transform.localPosition = origin;
+        wall.transform.localRotation = Quaternion.identity;
+        AvoidList list = wall.GetComponent<AvoidList>();
 
-        // apply height
-        foreach (Transform avoid in wallBottom.transform)
+        // for each terrain
+        foreach (var terrain in m_terrainComp)
         {
-            Vector3 avoidPos = avoid.transform.position;
-            var closestTerrain = m_terrainComp.Find(x =>
-                {
-                    var b = x.terrainData.bounds;
-                    b.center += x.GetPosition();
-                    Vector3 projectedAvoidPos = new Vector3(avoidPos.x, b.center.y, avoidPos.z);
-                    return b.Contains(projectedAvoidPos);
-                });
+            var size = terrain.terrainData.size;
+            var terrainOrigin = terrain.GetPosition();
 
-            float h = closestTerrain.SampleHeight(avoid.position);
-            avoid.position += Vector3.up * h;
-            Vector3 N = closestTerrain.terrainData.GetInterpolatedNormal((avoid.localPosition.x + origin.x) / size.x, (avoid.localPosition.y + origin.y) / size.y);
-            avoid.LookAt(avoid.position + N);
+            // for each step on x and z axis
+            for (float x = 0; x < size.x; x += steps.x)
+            {
+                for (float z = 0; z < size.z; z += steps.z)
+                {
+                    Vector2 interpolatedPosition = new Vector2(x / size.x, z / size.z);
+                    float h = terrain.terrainData.GetInterpolatedHeight(interpolatedPosition.x, interpolatedPosition.y);
+                    Vector3 N = terrain.terrainData.GetInterpolatedNormal(interpolatedPosition.x, interpolatedPosition.y);
+
+                    // compute avoidData
+                    Behaviour.EnemiesManager.BoidData avoidData;
+                    avoidData.position = terrainOrigin + new Vector3(x, h, z);
+                    avoidData.forward = N;
+
+                    list.m_avoidDatum.Add(avoidData);
+                }
+            }
         }
     }
 
@@ -197,50 +210,53 @@ public class AvoidEditor : EditorWindow
     {
         if (m_bottom)
         {
-            GameObject wallBottom = InstantiateAvoidWall(origin, parent, new Vector2(steps.x, steps.z), new Vector2(size.x, size.z), size.y / 2, "Bottom");
+            InstantiateAvoidWall(origin, Quaternion.identity, parent, new Vector2(steps.x, steps.z), new Vector2(size.x, size.z), size.y / 2, "Bottom");
         }
 
         if (m_top)
         {
-            GameObject wallTop = InstantiateAvoidWall(origin, parent, new Vector2(steps.x, steps.z), new Vector2(size.x, size.z), size.y / 2, "Top");
-            wallTop.transform.localRotation = Quaternion.Euler(180, 0, 0);
+            InstantiateAvoidWall(origin, Quaternion.Euler(180, 0, 0), parent, new Vector2(steps.x, steps.z), new Vector2(size.x, size.z), size.y / 2, "Top");
         }
 
         if (m_right)
         {
-            GameObject wallRight = InstantiateAvoidWall(origin, parent, new Vector2(steps.y, steps.z), new Vector2(size.y, size.z), size.x / 2, "Right");
-            wallRight.transform.localRotation = Quaternion.Euler(0, 0, 90);
+            InstantiateAvoidWall(origin, Quaternion.Euler(0, 0, 90), parent, new Vector2(steps.y, steps.z), new Vector2(size.y, size.z), size.x / 2, "Right");
         }
 
         if (m_left)
         {
-            GameObject wallLeft = InstantiateAvoidWall(origin, parent, new Vector2(steps.y, steps.z), new Vector2(size.y, size.z), size.x / 2, "Left");
-            wallLeft.transform.localRotation = Quaternion.Euler(0, 0, -90);
+            InstantiateAvoidWall(origin, Quaternion.Euler(0, 0, -90), parent, new Vector2(steps.y, steps.z), new Vector2(size.y, size.z), size.x / 2, "Left");
         }
 
         if (m_front)
         {
-            GameObject wallFront = InstantiateAvoidWall(origin, parent, new Vector2(steps.x, steps.y), new Vector2(size.x, size.y), size.z / 2, "Front");
-            wallFront.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+            InstantiateAvoidWall(origin, Quaternion.Euler(-90, 0, 0), parent, new Vector2(steps.x, steps.y), new Vector2(size.x, size.y), size.z / 2, "Front");
         }
 
         if (m_back)
         {
-            GameObject wallBack = InstantiateAvoidWall(origin, parent, new Vector2(steps.x, steps.y), new Vector2(size.x, size.y), size.z / 2, "Back");
-            wallBack.transform.localRotation = Quaternion.Euler(90, 0, 0);
+            InstantiateAvoidWall(origin, Quaternion.Euler(90, 0, 0), parent, new Vector2(steps.x, steps.y), new Vector2(size.x, size.y), size.z / 2, "Back");
         }
     }
 
-    GameObject InstantiateAvoidWall(Vector3 origin, Transform parent, Vector2 steps, Vector2 size, float heightOffset, string nameSuffix)
+    GameObject InstantiateAvoidWall(Vector3 origin, Quaternion rotation, Transform parent, Vector2 steps, Vector2 size, float heightOffset, string nameSuffix)
     {
-        GameObject wall = new GameObject("Wall" + nameSuffix);
-        wall.transform.parent = parent;
+        GameObject wall = Instantiate(m_prefabAvoidWall, parent);
+        wall.name += nameSuffix;
         wall.transform.localPosition = origin;
+        wall.transform.localRotation = rotation;
+        AvoidList list = wall.GetComponent<AvoidList>();
+
+        Vector3 wallPosition = wall.transform.position;
+        Quaternion wallRotation = wall.transform.rotation;
         for (float x = -size.x/2; x < size.x/2; x+=steps.x)
         {
             for (float y = -size.y / 2; y < size.y / 2; y += steps.y)
             {
-                GameObject avoid = Instantiate(m_prefabAvoid, wall.transform, new Vector3(x, -heightOffset, y));
+                Behaviour.EnemiesManager.BoidData boidData;
+                boidData.position = wallPosition + (wallRotation * new Vector3(x, -heightOffset, y));
+                boidData.forward = (wallPosition - boidData.position).normalized;
+                list.m_avoidDatum.Add(boidData);
             }
         }
         return wall;
