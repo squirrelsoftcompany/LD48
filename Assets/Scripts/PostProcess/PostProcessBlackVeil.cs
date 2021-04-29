@@ -16,12 +16,15 @@ public class PostProcessBlackVeil : MonoBehaviour {
         Vignette lVignette;
         ColorAdjustments lColorAdjustments;
         if (mVPBlackVeil.TryGet(out lVignette)) {
-            lVignette.intensity.value = Mathf.Clamp(depthEvent.sentFloat / playerData.maxDepth, 0.1f, 0.6f);
+            float lClampedValue = Mathf.Max(depthEvent.sentFloat / playerData.maxDepth, 0.3f);
+            float lIntensityRange = Mathf.InverseLerp(0.0f, 1.0f, lClampedValue);
+            lVignette.intensity.value = Mathf.InverseLerp(0.0f, 0.6f, lIntensityRange);
         }
 
         if (mVPBlackVeil.TryGet(out lColorAdjustments)) {
-            float lIntensity = Mathf.Clamp(1.0f - (depthEvent.sentFloat / playerData.maxDepth), 0.5f, 1.0f);
-            lColorAdjustments.colorFilter.value = new Color(lIntensity, lIntensity, lIntensity);
+            float lClampedValue = Mathf.Max(depthEvent.sentFloat / playerData.maxDepth, 0.5f);
+            float lColorRange = Mathf.InverseLerp(0.0f, 1.0f, lClampedValue);
+            lVignette.intensity.value = Mathf.InverseLerp(0.5f, 1.0f, lColorRange);
         }
     }
 }

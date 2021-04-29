@@ -208,7 +208,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 400
+  far clip plane: 5000
   field of view: 40
   orthographic: 0
   orthographic size: 10
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5668585967678860717}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf29e442eb3a623499e089077df14ede, type: 3}
   m_Name: 
@@ -380,6 +380,8 @@ MonoBehaviour:
   mentalHealthEvent: {fileID: 11400000, guid: 8b9b35a685c333b4783a682cc539c0af, type: 2}
   playerData: {fileID: 11400000, guid: ae01a080153326147b393a4e4574d85e, type: 2}
   mVPMentalHealth: {fileID: 11400000, guid: 60e894b5b4d7bff4aa77d8e2c949a715, type: 2}
+  mGammaDistorionShift: 40
+  mLensShift: 0.5
 --- !u!114 &1796802487
 MonoBehaviour:
   m_ObjectHideFlags: 0
