@@ -88,7 +88,7 @@ MonoBehaviour:
     m_myBackCulling: 1
     m_itsBackCulling: 0
     m_maxWeight: 2
-    m_relevantRadius: 200
+    m_relevantRadius: 600
     m_avoidanceRadius: 20
     m_curve:
       serializedVersion: 2
@@ -119,40 +119,40 @@ MonoBehaviour:
     m_avoid: 0
     m_myBackCulling: 0
     m_itsBackCulling: 0
-    m_maxWeight: 2
-    m_relevantRadius: 500
-    m_avoidanceRadius: 50
+    m_maxWeight: 0.75
+    m_relevantRadius: 100
+    m_avoidanceRadius: 20
     m_curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.49971247
-        inSlope: 0.5002866
-        outSlope: 0.5002866
+        value: 0
+        inSlope: 1
+        outSlope: 1
         tangentMode: 34
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       - serializedVersion: 3
         time: 1
-        value: 0.99999905
-        inSlope: 0.5002866
-        outSlope: 0.5002866
+        value: 1
+        inSlope: 1
+        outSlope: 1
         tangentMode: 34
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  - m_tag: Environment
+  - m_tag: Fart
     m_activated: 1
-    m_avoid: 1
-    m_myBackCulling: 1
-    m_itsBackCulling: 1
-    m_maxWeight: 2
-    m_relevantRadius: 50
+    m_avoid: 0
+    m_myBackCulling: 0
+    m_itsBackCulling: 0
+    m_maxWeight: 8
+    m_relevantRadius: 2000
     m_avoidanceRadius: 20
     m_curve:
       serializedVersion: 2
@@ -185,6 +185,39 @@ MonoBehaviour:
     m_itsBackCulling: 0
     m_maxWeight: 8
     m_relevantRadius: 2000
+    m_avoidanceRadius: 20
+    m_curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -2.8930798
+        outSlope: -2.8930798
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.037500024
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_avoidSettings:
+    m_tag: Environment
+    m_activated: 1
+    m_avoid: 1
+    m_myBackCulling: 1
+    m_itsBackCulling: 1
+    m_maxWeight: 2
+    m_relevantRadius: 50
     m_avoidanceRadius: 20
     m_curve:
       serializedVersion: 2
