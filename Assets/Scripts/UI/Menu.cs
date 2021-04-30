@@ -19,6 +19,7 @@ namespace UI {
             startScreen.SetActive(false);
             Time.timeScale = 1f;
             image.enabled = true;
+            controls.SetActive(false);
         }
 
         public void togglePlayPause() {
@@ -51,10 +52,6 @@ namespace UI {
 
         public void win() {
             winScreen.SetActive(true);
-        }
-
-        public void displayControls() {
-            controls.SetActive(true);
         }
     }
 }
