@@ -79,9 +79,11 @@ Material:
     m_Ints: []
     m_Floats:
     - Cutoff: 0.9
+    - Metalness: 0.3
     - Pebble_number: 1500
     - Pebbleness: 5
     - Randomness: 8
+    - Smoothness: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
