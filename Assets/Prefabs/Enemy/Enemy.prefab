@@ -178,6 +178,22 @@ CapsuleCollider:
   m_Height: 30
   m_Direction: 0
   m_Center: {x: -3.83, y: 0, z: 0}
+--- !u!111 &7995067567886722874
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4882087469720063581}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: b658770fc23323e41a90101111de5f7d, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: b658770fc23323e41a90101111de5f7d, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 1
 --- !u!1 &5415132572331017835
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,7 +224,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2599070872626137634}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 360}
 --- !u!108 &6451945484872576056
 Light:
   m_ObjectHideFlags: 0
@@ -348,6 +364,12 @@ PrefabInstance:
 --- !u!4 &3820939121952549950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8c8165ed754ebba4a990104db11cf8c9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3642297873948904405}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4882087469720063581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8164078558771037576, guid: 8c8165ed754ebba4a990104db11cf8c9,
     type: 3}
   m_PrefabInstance: {fileID: 3642297873948904405}
   m_PrefabAsset: {fileID: 0}
