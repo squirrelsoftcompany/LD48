@@ -8,17 +8,11 @@ namespace Player {
         private float health;
         [SerializeField] private float tickLoseInterval = 1;
 
-        [SerializeField] [Tooltip("When at minimum depth, that is the health by second that we lose")] [Range(0, 10)]
+        [SerializeField] [Tooltip("When at minimum depth, that is the mental by second that we lose")] [Range(0, 10)]
         private float minLoseZeroDepth;
 
-        [SerializeField] [Tooltip("When at maximum depth, that is the health by second that we lose")] [Range(0, 10)]
+        [SerializeField] [Tooltip("When at maximum depth, that is the mental by second that we lose")] [Range(0, 10)]
         private float maxLoseMaxDepth;
-
-        // loseHealth = ax + b, with x corresponding to depth
-        private float loseCoefficientA;
-
-        // loseHealth = ax + b, with x corresponding to depth
-        private float loseCoefficientB;
 
         // in seconds, what interval we want for health=0 (minCrazyStuffInterval) and health=0.8*max
         // (= maxCrazyStuffInterval)
@@ -75,8 +69,6 @@ namespace Player {
             inBonusZone = false;
             crazyStuffIntervalB = minCrazyStuffInterval;
             crazyStuffIntervalA = (maxCrazyStuffInterval - minCrazyStuffInterval) / thresholdCrazy;
-            loseCoefficientB = minLoseZeroDepth;
-            loseCoefficientA = maxLoseMaxDepth - minLoseZeroDepth; // / 1, because 1 is full depth 
             _lastTimeCrazyStuff = 0;
             Health = playerData.maxHealth;
         }
@@ -89,10 +81,8 @@ namespace Player {
             var time = Time.time;
             if (time - _lastTimeTick < tickLoseInterval) return;
             var depthPercent = depthEvent.sentFloat / playerData.maxDepth;
-            _currentLoseAmount = (loseCoefficientA * depthPercent + loseCoefficientB) *
-                                 (_isOutside
-                                     ? outOfBoundsMultiplier
-                                     : 1); // if we are outside of game bounds, lose more rapidly 
+            _currentLoseAmount = Mathf.Lerp(minLoseZeroDepth, maxLoseMaxDepth, depthPercent);
+            _currentLoseAmount *= (_isOutside ? outOfBoundsMultiplier : 1); // if we are outside of game bounds, lose more rapidly 
             Health -= _currentLoseAmount;
             _lastTimeTick = time;
         }
@@ -117,7 +107,9 @@ namespace Player {
         }
 
         private float mentalHealthSpeed() {
-            return (_gainPerSecond - _currentLoseAmount / tickLoseInterval) / playerData.maxHealth;
+            float range = (maxLoseMaxDepth - minLoseZeroDepth);
+            float current = _gainPerSecond - _currentLoseAmount / tickLoseInterval;
+            return (current - (minLoseZeroDepth*Mathf.Sign(current))) / range;
         }
 
         private void doSomethingCrazy() {
