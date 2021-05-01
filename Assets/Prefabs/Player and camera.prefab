@@ -650,17 +650,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28fdfbac01ab46799ee0d87c2dca6d15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpinDegrees: 50
-  maxSpinDegrees: 10
-  minForce: 0.98
-  maxForce: 11.32
-  minExplosion: 2.46
-  maxExplosion: 9.57
-  minExplosionRadius: 1.38
-  maxExplosionRadius: 6.32
+  minMaxSpinDegrees: {x: 50, y: 10}
+  minMaxBackwardForce: {x: 0.98, y: 11.32}
+  minMaxExplosion: {x: 1.5, y: 6}
+  minMaxExplosionRadius: {x: 1.38, y: 6.32}
   maxDistanceExplosion: 5.12
-  minUpwardsModifier: 0.51
-  maxUpwardsModifier: 4.89
+  minMaxUpwardsModifier: {x: 0.51, y: 4.89}
   crazyAction: {fileID: 11400000, guid: 9bf1358f43988e446862e611b33ae2eb, type: 2}
 --- !u!114 &795518733990320358
 MonoBehaviour:
