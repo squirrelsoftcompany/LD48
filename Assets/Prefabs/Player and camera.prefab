@@ -267,8 +267,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4010951996918530793}
-  m_LocalRotation: {x: 0.072014794, y: -0.0000000074312365, z: 5.365521e-10, w: 0.99740356}
-  m_LocalPosition: {x: 770, y: 254.5, z: 1679}
+  m_LocalRotation: {x: 0.058038194, y: 0.000000017177204, z: -9.986172e-10, w: 0.9983144}
+  m_LocalPosition: {x: 770, y: 253.5, z: 1680}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4010951998135452703}
@@ -304,7 +304,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 0
-    m_SensorSize: {x: 1.849711, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -372,14 +372,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 3
-  m_FollowOffset: {x: 0, y: 4.5, z: -11}
-  m_XDamping: 13
+  m_FollowOffset: {x: 0, y: 3.5, z: -10}
+  m_XDamping: 15
   m_YDamping: 1
-  m_ZDamping: 1
+  m_ZDamping: 0.5
   m_AngularDampingMode: 0
-  m_PitchDamping: 3
-  m_YawDamping: 3
-  m_RollDamping: 3
+  m_PitchDamping: 0.5
+  m_YawDamping: 0.5
+  m_RollDamping: 0
   m_AngularDamping: 0
 --- !u!114 &1540699592
 MonoBehaviour:
