@@ -4,18 +4,26 @@ namespace Player {
     [RequireComponent(typeof(Rigidbody))]
     public class CrazyAction : MonoBehaviour {
         private Rigidbody _rigidbody;
-        [Header("Crazy Spin")]
-        [SerializeField] private Vector2 minMaxSpinDegrees;
-        [Header("Crazy Backward")]
-        [SerializeField] private Vector2 minMaxBackwardForce;
-        [Header("Crazy Explosion")]
-        [SerializeField] private Vector2 minMaxExplosion;
-        [SerializeField] private Vector2 minMaxExplosionRadius;
-        [SerializeField] private float maxDistanceExplosion;
-        [SerializeField] private Vector2 minMaxUpwardsModifier;
 
-        [Header("GameEvent")]
-        [SerializeField] private GameEvent crazyAction;
+        [Header("Crazy Spin")] [SerializeField]
+        private Vector2 minMaxSpinDegrees;
+
+        [Header("Crazy Backward")] [SerializeField]
+        private Vector2 minMaxBackwardForce;
+
+        [Header("Crazy Explosion")] [Tooltip("Explosion force")] [SerializeField]
+        private Vector2 minMaxExplosion;
+
+        [Tooltip("Radius of the explosion")] [SerializeField]
+        private Vector2 minMaxExplosionRadius;
+
+        [Tooltip("Maximum distance from the submarine for the explosion")] [SerializeField]
+        private float maxDistanceExplosion;
+
+        [Tooltip("Min and max force upwards for explosion")] [SerializeField]
+        private Vector2 minMaxUpwardsModifier;
+
+        [Header("GameEvent")] [SerializeField] private GameEvent crazyAction;
 
         private void Start() {
             _rigidbody = GetComponent<Rigidbody>();
@@ -34,7 +42,7 @@ namespace Player {
                 crazyExplosion();
             }
 
-        crazyAction.Raise();
+            crazyAction.Raise();
         }
 
         private void crazySpin() {
@@ -49,7 +57,7 @@ namespace Player {
         }
 
         public void crazyExplosion() {
-            var amount = minMaxExplosion.y;//Random.Range(minMaxExplosion.x, minMaxExplosion.y);
+            var amount = Random.Range(minMaxExplosion.x, minMaxExplosion.y);
             var explosionRadius = Random.Range(minMaxExplosionRadius.x, minMaxExplosionRadius.y);
             var upwardsModifier = Random.Range(minMaxUpwardsModifier.x, minMaxUpwardsModifier.y);
             var position = Random.insideUnitSphere * maxDistanceExplosion + transform.position;
