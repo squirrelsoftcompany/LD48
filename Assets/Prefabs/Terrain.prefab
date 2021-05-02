@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 2955162193389392435}
   m_Layer: 0
   m_Name: Terrain_(0.0, -300.0, 1000.0)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 2955162193449674990}
   m_Layer: 0
   m_Name: Terrain_(0.0, -300.0, 0.0)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 2955162194368174002}
   m_Layer: 0
   m_Name: Terrain_(-1000.0, -300.0, 1000.0)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 2955162194623146333}
   m_Layer: 0
   m_Name: Terrain_(-1000.0, -300.0, 0.0)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
