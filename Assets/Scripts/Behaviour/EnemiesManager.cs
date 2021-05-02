@@ -1,15 +1,15 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Attribute;
 using System.Linq;
+using Attribute;
+using UnityEngine;
 using UnityEngine.Profiling;
 
 namespace Behaviour
 {
     public class EnemiesManager : MonoBehaviour
     {
-        [System.Serializable]
+        [Serializable]
         public class BoidSettings
         {
             [TagSelector] public string m_tag;
@@ -31,7 +31,7 @@ namespace Behaviour
             }
         }
 
-        [System.Serializable]
+        [Serializable]
         public struct BoidData
         {
             public Vector3 position;
@@ -48,16 +48,15 @@ namespace Behaviour
 
         Queue<EnemyBoidish> enemyBoidishQueue;
 
-        static EnemiesManager _inst;
-        public static EnemiesManager Get => _inst;
-        public static List<BoidSettings> BoidsSettings => _inst?.m_boidSettings;
-        public BoidSettings this[string tag] => m_boidSettings?.Find(d => d.m_tag == tag);
+        public static EnemiesManager Get { get; private set; }
+
+        public BoidSettings this[string boidTag] => m_boidSettings?.Find(d => d.m_tag == boidTag);
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            if (!_inst)
-                _inst = this;
+            if (!Get)
+                Get = this;
 
             // get relevant gos
             _taggedGOs = new Dictionary<BoidSettings, List<GameObject>>();
@@ -85,16 +84,15 @@ namespace Behaviour
             enemyBoidishQueue = new Queue<EnemyBoidish>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             Profiler.BeginSample("EnemiesManager_FixedUpdate");
 
             // update boidDatum
             _boidDatum.Clear();
-            foreach (var pair in _taggedGOs)
-            {
-                if (pair.Key.m_activated) // if not activated, then.... we don't care...
-                    _boidDatum[pair.Key] = pair.Value.ConvertAll(x => new BoidData { position = x.transform.position, forward = x.transform.forward });
+            foreach (var pair in _taggedGOs.Where(pair => pair.Key.m_activated)) { 
+                // if not activated, then.... we don't care...
+                _boidDatum[pair.Key] = pair.Value.ConvertAll(x => new BoidData { position = x.transform.position, forward = x.transform.forward });
             }
 
             // update wantedDirection
@@ -134,10 +132,8 @@ namespace Behaviour
 
         private List<BoidData> RelevantBoidData(BoidData self, BoidSettings settings, List<BoidData> boidDatum)
         {
-            List<BoidData> relevants = new List<BoidData>();
-
             // Get those inside range
-            relevants = boidDatum.FindAll(x =>
+            var relevants = boidDatum.FindAll(x =>
             {
                 float d = Vector3.Distance(x.position, self.position); // d can't be negative
                 // if x not at self.position and weight at this distance is not null
