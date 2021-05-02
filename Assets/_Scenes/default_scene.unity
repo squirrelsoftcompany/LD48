@@ -52978,11 +52978,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 5668585967678860718, guid: da13813b5ab686b4b9388730828d3edf,
-        type: 3}
-      propertyPath: far clip plane
-      value: 5000
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da13813b5ab686b4b9388730828d3edf, type: 3}
 --- !u!1001 &815143835
@@ -52992,26 +52987,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2955162193389392434, guid: 96d2b03bbcfaa7b4b84f3d2d6465e8f7,
-        type: 3}
-      propertyPath: m_TagString
-      value: Environment
-      objectReference: {fileID: 0}
-    - target: {fileID: 2955162193449674989, guid: 96d2b03bbcfaa7b4b84f3d2d6465e8f7,
-        type: 3}
-      propertyPath: m_TagString
-      value: Environment
-      objectReference: {fileID: 0}
-    - target: {fileID: 2955162194368174001, guid: 96d2b03bbcfaa7b4b84f3d2d6465e8f7,
-        type: 3}
-      propertyPath: m_TagString
-      value: Environment
-      objectReference: {fileID: 0}
-    - target: {fileID: 2955162194623146332, guid: 96d2b03bbcfaa7b4b84f3d2d6465e8f7,
-        type: 3}
-      propertyPath: m_TagString
-      value: Environment
-      objectReference: {fileID: 0}
     - target: {fileID: 6753050471352881530, guid: 96d2b03bbcfaa7b4b84f3d2d6465e8f7,
         type: 3}
       propertyPath: m_RootOrder
@@ -55745,41 +55720,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5456653131996949368, guid: fd30b3b3d1b77cc45a3f1c287befdae1,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5456653131996949368, guid: fd30b3b3d1b77cc45a3f1c287befdae1,
-        type: 3}
-      propertyPath: m_PlayAutomatically
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5456653131996949368, guid: fd30b3b3d1b77cc45a3f1c287befdae1,
-        type: 3}
-      propertyPath: m_Animations.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5456653131996949368, guid: fd30b3b3d1b77cc45a3f1c287befdae1,
-        type: 3}
-      propertyPath: m_Animations.Array.data[1]
-      value: 
-      objectReference: {fileID: 7400000, guid: b658770fc23323e41a90101111de5f7d, type: 2}
-    - target: {fileID: 6451945484681288091, guid: fd30b3b3d1b77cc45a3f1c287befdae1,
-        type: 3}
-      propertyPath: m_Range
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 6451945484681288091, guid: fd30b3b3d1b77cc45a3f1c287befdae1,
-        type: 3}
-      propertyPath: m_SpotAngle
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 6451945484681288091, guid: fd30b3b3d1b77cc45a3f1c287befdae1,
-        type: 3}
-      propertyPath: m_InnerSpotAngle
-      value: 45
-      objectReference: {fileID: 0}
     - target: {fileID: 7182916255494794563, guid: fd30b3b3d1b77cc45a3f1c287befdae1,
         type: 3}
       propertyPath: m_Name
