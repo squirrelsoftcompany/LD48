@@ -652,10 +652,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minMaxSpinDegrees: {x: 50, y: 10}
   minMaxBackwardForce: {x: 0.98, y: 11.32}
-  minMaxExplosion: {x: 1.5, y: 6}
-  minMaxExplosionRadius: {x: 1.38, y: 6.32}
-  maxDistanceExplosion: 5.12
-  minMaxUpwardsModifier: {x: 0.51, y: 4.89}
+  minMaxExplosion: {x: 0.5, y: 5}
+  minMaxExplosionRadius: {x: 0.5, y: 4.9}
+  maxDistanceExplosion: 6
+  minMaxUpwardsModifier: {x: 0.01, y: 4.89}
   crazyAction: {fileID: 11400000, guid: 9bf1358f43988e446862e611b33ae2eb, type: 2}
 --- !u!114 &795518733990320358
 MonoBehaviour:
